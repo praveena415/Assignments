@@ -1,0 +1,12 @@
+
+let age = 4;
+function displayAge(){
+  console.log("Present age: ",age);
+}
+function changeAge(){
+  age = 52;
+  console.log("age after updating: ",age);
+}
+displayAge();
+changeAge();
+displayAge();
