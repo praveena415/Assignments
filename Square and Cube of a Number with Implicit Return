@@ -1,0 +1,5 @@
+let m = (a)=>({
+  Square: a*a,
+  Cube: a*a*a
+});
+console.log(m(5));
