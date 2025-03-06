@@ -1,0 +1,13 @@
+function manageStudents(students) {
+    return students.join(",");
+}
+let addStudent=(students,position,newStudents)=>{
+  return students.splice(position,0,...newStudents);
+}
+let studentExist=(students,name)=>{
+  return students.includes(name);
+}
+let students = ["Alice", "Bob", "Charlie"];
+addStudent(students,1,["Praveena","Ranjith"]);
+console.log(studentExist(students,"Ranjith"));
+console.log(manageStudents(students));
