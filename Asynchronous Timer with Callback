@@ -1,0 +1,10 @@
+
+function timer(duration, onComplete){
+  setTimeout(()=>{
+    console.log(`Timer of ${duration} ms finished`);
+    onComplete();
+  },duration);
+}
+timer(2000, ()=>{
+  console.log("callback executed successfully!");
+});
