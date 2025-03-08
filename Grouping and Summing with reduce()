@@ -1,0 +1,23 @@
+
+let categories = ["electronics", "clothing", "electronics", "toys", "clothing", "toys", "toys"]
+let frequency = categories.reduce((acc,cat)=>{
+  acc[cat]=(acc[cat] || 0)+1
+  return acc
+},{});
+let sorted=Object.entries(frequency).sort((a,b)=>b[1]-a[1])
+console.log(sorted)
+let employee_info=[
+{ name: "Alice", tasksCompleted: 8, rating: 4.7 },
+{ name: "Bob", tasksCompleted: 4, rating: 4.0 },
+{ name: "Charlie", tasksCompleted: 6, rating: 3.5 },
+{ name: "David", tasksCompleted: 10, rating: 4.9 },
+{ name: "Eve", tasksCompleted: 7, rating: 2.8 }
+]
+let processEmployees=(employee_info)=>{
+  let filtered=employee_info.filter(employee => employee.tasksCompleted>5)
+  let mapping=filtered.map(employee => ({name : employee.name,employee_performance : employee.rating>4.5 ? "Excellent" : employee.rating>=3 && employee.rating<=4.5 ? "Good" : "Needs Improvement"}))
+  const order={"Excellent":3, "Good":2, "Needs Improvement":1}
+  let sorted=mapping.sort((a,b)=>order[b.employee_performance]-order[a.employee_performance])
+  console.log(sorted)
+}
+processEmployees(employee_info)
