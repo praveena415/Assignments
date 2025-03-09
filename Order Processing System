@@ -1,0 +1,36 @@
+
+function createOrderManager(){
+  return{
+    addOrder(order){
+      addOrder.push(order)
+      return addOrder;
+    },
+    updateOrder(id, newStatus){
+      return `this.${updateOrder}`
+    },
+    filterOrders(status){
+      if(order==status){
+        return status.filter()
+      }
+    },
+    sortOrders(date,status){
+      let localeCompare=a-b;
+      return sortOrders
+    },
+    getTotalRevenue(){
+      reduce((acc, cur)=>{
+      acc=acc+cur;
+      return getTotalRevenue
+    })
+    },
+    exportOrders(){
+      exportOrders= JSON.stringify()
+      return exportOrders
+    }
+  }
+}
+const manager = createOrderManager();
+manager.addOrder({ id: 1, customerName: "Alice", items: [{ name: "Laptop", price: 1000, quantity: 1 }], status: "pending", createdAt: new Date("2024-03-01") });
+manager.addOrder({ id: 2, customerName: "Bob", items: [{ name: "Phone", price: 500, quantity: 2 }], status: "shipped", createdAt: new Date("2024-03-02") });
+console.log(manager.filterOrders("pending"));
+console.log(manager.getTotalRevenue());
