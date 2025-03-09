@@ -1,0 +1,51 @@
+function createFunctionRegistry(){
+  return {
+    registerFunction(name, fn){
+      return registerFunction
+    },
+    executeFunction(name, args, context = null){
+      executeFunction.call(args)
+      executeFunction.apply(args)
+      return executeFunction
+    },
+    mapFunction(name, dataArray){
+      dataArray.forEach(item)
+      return item
+    },
+    filterFunction(name, dataArray){
+      dataArray.forEach(item)
+      return item
+    },
+    reduceFunction(name, dataArray, initialValue){
+      dataArray.reduce((acc, cur)=>{
+        acc=acc+cur
+        return acc
+      })
+    },
+    executeFunctionAsync(name, args, delay){
+      setTimeout(function() {}, delay);
+    },
+    exportRegistry(){
+      exportRegistry=JSON.stringify();
+      return exportRegistry
+    }
+  }
+}
+
+const registry = createFunctionRegistry();
+registry.registerFunction("double", x => x * 2);
+console.log(registry.executeFunction("double", [5]));
+registry.executeFunctionAsync("double", [4], 2000).then(console.log);
+
+
+
+
+
+
+
+
+
+
+
+
+
