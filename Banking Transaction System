@@ -1,0 +1,24 @@
+
+function createBankAccount(balance){
+  return {
+    deposit(amount){
+      balance=balance+amount;
+      return balance;
+    },withdraw(amount) {
+      if (amount > balance) { //if amount>balance, it returns Insufficient funds
+        return "Insufficient funds";
+      }else{
+         balance = balance - amount; //otherwise it return the balance
+         return balance;
+      }
+    },
+    getBalance(){
+      return balance;
+    },
+  }
+}
+const myAccount = createBankAccount(1000);  
+console.log(myAccount.deposit(500));   // "Deposited ₹500. New balance: ₹1500"  
+console.log(myAccount.withdraw(200));  // "Withdrew ₹200. New balance: ₹1300"  
+console.log(myAccount.withdraw(1500)); // "Insufficient funds"  
+console.log(myAccount.getBalance());   // "Current balance: ₹1300" 
