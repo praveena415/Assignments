@@ -1,0 +1,43 @@
+function placeOrder() {
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            let orderId = Math.floor(10 + Math.random() * 90); //  it generates a 2-digit number randomly
+            console.log(`Order ID: ${orderId}`);
+            res(orderId);
+        }, 1000);
+    });
+}
+function processOrder(orderId) {
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            let processingCode = ((orderId + 22) % 90) + 10; // performing this operation to get 2 digit number by using orderID
+             console.log(`Processing Code: ${processingCode}`);
+            res(processingCode);
+        }, 1000);
+    });
+}
+function confirmOrder(processingCode) {
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            let confirmationNumber = ((processingCode + 12) % 90)+10; 
+            console.log(`Confirmation Number: ${confirmationNumber}`);
+            res(confirmationNumber);
+        }, 1000);
+    });
+}
+function calculateFinalResult(confirmationNumber) {
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            let extraNumber = Math.floor(10 + Math.random() * 90); 
+            console.log(`Extra Number: ${extraNumber}`);
+            let finalResult = confirmationNumber + extraNumber;
+            res(finalResult);
+        }, 1000);
+    });
+}
+placeOrder()
+    .then((orderId) => processOrder(orderId))
+    .then((processingCode) => confirmOrder(processingCode))
+    .then((confirmationNumber) => calculateFinalResult(confirmationNumber))
+    .then((finalResult) => console.log(`Final Result: ${finalResult}`))
+    .catch((error) => console.log(`Error: ${error}`));
