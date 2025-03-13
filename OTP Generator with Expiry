@@ -1,0 +1,29 @@
+
+
+function createOTPSystem(){
+  let OTP ,c ;
+  return {
+    generateOTP(){
+        OTP = Math.floor(100000 + Math.random() * 900000); // it generate random OTP
+        c=1;  
+      return `Your OTP is: ${OTP}`;
+    },
+    getOTP(){
+      if(c){
+        c=0  //if it not called, so retuen OTP
+        return OTP;
+        
+      }
+      else{
+        return "OTP expired"; //already called, return OTP expaired
+      }
+    }
+  }
+}
+const otpSystem = createOTPSystem();  
+console.log(otpSystem.generateOTP());  
+console.log(otpSystem.getOTP());      
+console.log(otpSystem.getOTP());        
+console.log(otpSystem.generateOTP());  
+console.log(otpSystem.getOTP());      
+console.log(otpSystem.getOTP());     
