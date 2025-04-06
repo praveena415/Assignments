@@ -1,0 +1,16 @@
+function createCounter(){
+  let c=0
+  return{
+    increment:function(){
+      c=c+1 
+      return c
+    },
+    getCount:function(){
+      return c
+    }
+  }
+}
+const counter = createCounter();
+console.log(counter.increment());
+console.log(counter.increment());
+console.log(counter.getCount()); 
