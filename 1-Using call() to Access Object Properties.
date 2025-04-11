@@ -1,0 +1,8 @@
+let details={
+  name : "Praveena Prasad",
+  age : 21
+}
+function personInfo(){
+  console.log(`Name : ${this.name}, Age : ${this.age}`)
+}
+personInfo.call(details)
