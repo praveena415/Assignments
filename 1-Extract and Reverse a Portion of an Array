@@ -1,0 +1,7 @@
+
+function extractAndReverse(a){
+  let r=a.slice(2,5)
+  return r.reverse()
+}
+let a=[15, 30, 45, 60, 75, 90]
+console.log(extractAndReverse(a))
