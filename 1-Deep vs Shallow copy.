@@ -1,0 +1,9 @@
+let details={
+   name: "Alice",
+   hobbies: ["reading", "traveling"] 
+}
+console.log("Original:",details)
+let jsonDetails=JSON.stringify(details)
+let parseDetails=JSON.parse(jsonDetails)
+parseDetails.hobbies.push("coding")
+console.log("Clone:",parseDetails)
