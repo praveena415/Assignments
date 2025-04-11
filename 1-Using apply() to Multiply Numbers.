@@ -1,0 +1,5 @@
+
+let multiplyNumbers=(n,a)=>{
+  return n*a
+}
+console.log(multiplyNumbers.apply(null,[2,3]))
