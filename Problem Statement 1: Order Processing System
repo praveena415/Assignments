@@ -1,0 +1,49 @@
+
+function createOrderManager(){
+  let orders=[]
+  
+  return {
+    addOrder:function(order){
+      order.status=order.status 
+      order.createdAt=order.createdAt 
+      orders.push(order)
+    },
+    updateOrder:function(id, newStatus){
+      let order=orders.find(order=>order.id===id)
+      if(order){
+        order.status=newStatus
+      }
+    },
+    filterOrders:function(status){
+      return orders.filter(order=>order.status===status)
+    },
+    sortOrders:function(by){
+      let sorted=[...orders]
+      if(by==="date"){
+        sorted.sort((a,b)=>(a.createdAt)-(b.createdAt))
+      }else if(by==="status"){
+        sorted.sort((a,b)=>a.status.localecompare(b.status))
+      }
+      return sorted
+    },
+    getTotalRevenue:function(){
+      return orders.reduce((total, order)=>{
+        return total+order.items.reduce((sum,item)=>{
+          return sum+item.price*item.quantity
+        },0)
+      },0)
+    },
+    exportOrders:function(){
+      return JSON.stringify(orders)
+    }
+  };
+}
+const manager = createOrderManager();
+manager.addOrder({ id: 1, customerName: "Alice", items: [{ name: "Laptop", price: 1000, quantity: 1 }], status: "pending", createdAt: new Date("2024-03-01") });
+manager.addOrder({ id: 2, customerName: "Bob", items: [{ name: "Phone", price: 500, quantity: 2 }], status: "shipped", createdAt: new Date("2024-03-02") });
+console.log(manager.filterOrders("pending"));
+console.log(manager.getTotalRevenue());
+
+
+
+
