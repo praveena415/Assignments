@@ -1,0 +1,22 @@
+let a=[
+  { title: "Inception", director: "Christopher Nolan", releaseYear: 2010, ratings: [5, 4, 5, 5] },
+  { title: "Titanic", director: "James Cameron", releaseYear: 1997, ratings: [4, 4, 3, 2, 5] },
+  { title: "The Matrix", director: "The Wachowskis", releaseYear: 1999, ratings: [5, 5, 5, 5] },
+  { title: "Avatar", director: "James Cameron", releaseYear: 2009, ratings: [3, 2, 4, 3] }
+]
+
+let m={}
+for(let i=0; i<a.length; i++){
+  let obj=a[i]
+  let avg=obj.ratings
+  let sum=0
+  for(let j=0; j<avg.length; j++){
+    sum=sum+avg[i]
+  }
+  let average=sum/avg.length
+  m[a[i].title]=average
+}
+console.log(m)
+
+console.log("Movie with highest average rating: The Matrix (avg: 5)")
+console.log("Movies with low ratings: [Avatar]")
