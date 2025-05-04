@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0; ">
+    <title>How the Internet Works</title>
+    <style>
+        body{
+            background: linear-gradient(rgb(5, 243, 243),rgb(18, 18, 248),rgb(231, 90, 168))
+        }
+        table{
+            border: 1px;
+        }
+        h1{
+            text-align:center
+        }
+        div{
+            text-align:center
+        }
+        .p1{
+            color:aqua;
+        }
+        button:hover{
+            color:green;
+        }
+        button:active{
+            background-color:blue;
+        }
+        button::after{
+            color:gold;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color:#ff0095; background-color: rgb(76, 236, 236);">How the Internet Works</h1>
+    <section style="text-align:center"><i>Client & Server communication</i></section>
+    <h2><u>1. Web request works</u></h2>
+    <p>A web request is how your computer asks a web server for information, like a webpage, image, or video. It's like ordering something from a store: you ask for it, and the store (server) sends it back. This process uses a standard protocol called HTTP, which ensures everyone understands how to send and receive this information. </p>
+    <h3><u>2. Protocols</u></h3>
+    <ul>
+        <li>HTTP</li>
+        <li>HTTPS</li>
+        <li>TCP/IP</li>
+        <li>DNS</li>
+        <li>SMTP</li>
+        <li>FTP</li>
+    </ul>
+    <h2><u>3. The client & the server</u></h2>
+    <br>
+    <link rel="stylesheet" href="./style.css">
+    <table style="color:white; background-color: rgb(15, 15, 15); border:1">
+        <tr>
+            <th>Feature</th>
+            <th>Client</th>
+            <th>Server</th>
+        </tr>
+        <tr>
+            <td>Purpose</td>
+            <td>Requests and uses services from a server</td>
+            <td>Provides services to clients</td>
+        </tr>
+        <tr>
+            <td>Location</td>
+            <td>User's device</td>
+            <td>Typically a cental or remote machine</td>
+        </tr>
+        <tr>
+            <td>Resources</td>
+            <td>Access to local resources</td>
+            <td>Access to server's recources</td>
+        </tr>
+        <tr>
+            <td>Example</td>
+            <td>Wed browser</td>
+            <td>Wed server</td>
+        </tr>
+    </table>
+    <br>
+    <h2><u>4. Static vs Dynamic Websites</u></h2>
+    <br>
+    <table style="color:white; background-color: black;">
+        <tr>
+            <th>Feature</th>
+            <th>Static</th>
+            <th>Dynamic</th>
+        </tr>
+        <tr>
+            <td>Size</td>
+            <td>Fixed size, determined at compile time</td>
+            <td>Size can change during runtime</td>
+        </tr>
+        <tr>
+            <td>Memory Allocation</td>
+            <td>Allocated at compile time</td>
+            <td>Allocated during runtime</td>
+        </tr>
+        <tr>
+            <td>Data Persistence</td>
+            <td>Data remains the same unless manually changed</td>
+            <td>Data can change dynamically based on factors</td>
+        </tr>
+        <tr>
+            <td>Usage</td>
+            <td>Arrays, stacks, queues</td>
+            <td>Linked lists, trees, hash tables</td>
+        </tr>
+        <tr>
+            <td>Examples</td>
+            <td>Static web pages, simple games</td>
+            <td>Dynamic web pages, online applications</td>
+        </tr>
+    </table>
+    <br>
+    <h2>Client & Server Achitecture</h2>
+    <p class="p1">Client-server architecture is a cornerstone of modern system design, where the network infrastructure is structured to include multiple clients and a central server. In this model, clients are devices or programs that make requests for services or resources, while the server is a powerful machine or software that fulfills these requests. Communication between clients and the server follows a request-response protocol, such as HTTP/HTTPS for web services or SQL for database queries.</p>
+    <ol>
+        <li>This architecture allows for efficient data management and resource allocation by centralizing critical functions on the server, which can handle complex processing and large-scale data storage.</li>
+        <li>Clients manage user interactions and send specific requests to the server, which processes these requests and sends back appropriate responses.</li>
+        <li>The client-server architecture is highly scalable, as it can accommodate more clients by scaling the server's capabilities or adding additional servers.</li>
+        <li>This design is prevalent in various applications, including web services, database management, and email systems, providing a robust framework for developing and managing complex, distributed systems efficiently.</li>
+        
+    </ol>
+    <h2 style="color:aqua; background-color: black; text-align:centre">Client & Server interaction</h2>
+    <div style="display:flex; width:100%; margin-bottom:30px">
+        <h4>Image: </h4>
+        <img src="./image.png" alt="Client & Server Interaction">
+
+    </div>
+    <br>
+    <div style="display:flex; width:100%; margin-bottom:30px">
+        <h4>Video: </h4>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/SwLdKeC8scE?si=SAwEKtZ_bgU0HPR_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <br>
+    <div>
+        <h4>Maps:</h4>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7858707.779328961!2d80.7610164!3d15.89546195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a3546f8ae93d47f%3A0x33d1bbbe95adcd83!2sAndhra%20Pradesh!5e0!3m2!1sen!2sin!4v1745824013625!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <hr>
+    <h4 style="color:red">Quiz</h4>
+    <form action="">
+      <ol type="I">
+        <li><label for="What is the interaction between client and server?">What is the interaction between client and server?</label> 
+            <input type="text" name="What is the interaction between client and server?" id="What is the interaction between client and server?" required> 
+            <br></li>
+        <li><label for="What is the relationship between client and server?">What is the relationship between client and server?</label>
+            <input type="text" id="What is the relationship between client and server?" required>
+            <br></li>
+        <li><label for="What is client and server with an example?">What is client and server with an example?</label>
+            <input type="text" id="What is client and server with an example?"></li>
+        
+      </ol>  
+        <br>      
+        
+        <button>Submit</button>
+    </form>
+</body>
+</html>
