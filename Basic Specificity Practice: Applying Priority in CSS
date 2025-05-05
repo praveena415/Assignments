@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Specificity Example</title>
+  <style>  
+    div {
+      color: green;
+    }   
+    .highlight {
+      color: orange;
+    }   
+    #special {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="highlight" id="special">
+    This text demonstrates CSS specificity.
+  </div>
+</body>
+</html>
