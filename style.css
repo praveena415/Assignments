@@ -1,4 +1,9 @@
-p{
-    color:hsl(236, 100%, 50%)
-    
+h3{
+   background-color:aquamarine; 
+   font-style:italic;
+}
+nav a {
+    padding:20px;
+    text-align:center;
+    color:blue
 }

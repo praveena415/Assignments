@@ -2,145 +2,189 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0; ">
-    <title>How the Internet Works</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTFOLIO</title>
+    <link rel="stylesheet" href="./style.css">
     <style>
         body{
-            background-color: aqua;
+            margin-top: 100px;
+            margin-bottom: 100px;
+            margin-left: 100px;
+            margin-right:100px;
+            background: linear-gradient(rgb(240, 209, 123),rgb(155, 155, 233),rgb(140, 224, 224),pink);
+        }
+        .contains{
+            display:grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap:20px;
+        }
+        section{
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap:50px;
+        }
+        header{
+            background-color: rgb(13, 13, 90);
+            color:white;
+            text-align:center;
+            font-weight:bold;
+            
+            height:80px;
+            padding-top: 30px;
+        }
+        button:hover{
+            color:greenyellow;
+            background-color: rgb(128, 128, 248);
+        }
+        button:active{
+            color:rgb(15, 75, 15);
+            background-color: rgb(8, 8, 148);
+        }
+        button::before{
+            color:rgb(21, 21, 124);
+            background-color: rgb(4, 4, 34);
         }
         table{
-            border: 1px;
+            border-collapse: collapse;
+            border:2px solid;          
         }
-        h1{
-            text-align:center
+        td{
+            border-collapse: collapse;
+            border:2px solid;
+            color:white;
+            background-color: black;
         }
-        div{
-            text-align:center
+        th{
+            border-collapse: collapse;
+            border:2px solid;
+            background-color: aqua;
         }
+        
+        
     </style>
 </head>
 <body>
-    <h1 style="color:#ff0095; background-color: rgb(76, 236, 236);">How the Internet Works</h1>
-    <section style="text-align:center"><i>Client & Server communication</i></section>
-    <h2><u>1. Web request works</u></h2>
-    <p>A web request is how your computer asks a web server for information, like a webpage, image, or video. It's like ordering something from a store: you ask for it, and the store (server) sends it back. This process uses a standard protocol called HTTP, which ensures everyone understands how to send and receive this information. </p>
-    <h3><u>2. Protocols</u></h3>
-    <ul>
-        <li>HTTP</li>
-        <li>HTTPS</li>
-        <li>TCP/IP</li>
-        <li>DNS</li>
-        <li>SMTP</li>
-        <li>FTP</li>
-    </ul>
-    <h2><u>3. The client & the server</u></h2>
+    <header>
+        <span style="font-size:30px;">PORTFOLIO</span>
+        <br>
+        <br>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Conatct</a>
+        </nav>
+    </header>
+    
     <br>
-    <link rel="stylesheet" href="./style.css">
-    <table style="color:white; background-color: rgb(15, 15, 15); border:1">
-        <tr>
-            <th>Feature</th>
-            <th>Client</th>
-            <th>Server</th>
-        </tr>
-        <tr>
-            <td>Purpose</td>
-            <td>Requests and uses services from a server</td>
-            <td>Provides services to clients</td>
-        </tr>
-        <tr>
-            <td>Location</td>
-            <td>User's device</td>
-            <td>Typically a cental or remote machine</td>
-        </tr>
-        <tr>
-            <td>Resources</td>
-            <td>Access to local resources</td>
-            <td>Access to server's recources</td>
-        </tr>
-        <tr>
-            <td>Example</td>
-            <td>Wed browser</td>
-            <td>Wed server</td>
-        </tr>
-    </table>
+    <section class="s1">
+        <span class="material-symbols-outlined">
+            mail
+        </span>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mail" />
+    </section>
+    
     <br>
-    <h2><u>4. Static vs Dynamic Websites</u></h2>
-    <br>
-    <table style="color:white; background-color: black;">
-        <tr>
-            <th>Feature</th>
-            <th>Static</th>
-            <th>Dynamic</th>
-        </tr>
-        <tr>
-            <td>Size</td>
-            <td>Fixed size, determined at compile time</td>
-            <td>Size can change during runtime</td>
-        </tr>
-        <tr>
-            <td>Memory Allocation</td>
-            <td>Allocated at compile time</td>
-            <td>Allocated during runtime</td>
-        </tr>
-        <tr>
-            <td>Data Persistence</td>
-            <td>Data remains the same unless manually changed</td>
-            <td>Data can change dynamically based on factors</td>
-        </tr>
-        <tr>
-            <td>Usage</td>
-            <td>Arrays, stacks, queues</td>
-            <td>Linked lists, trees, hash tables</td>
-        </tr>
-        <tr>
-            <td>Examples</td>
-            <td>Static web pages, simple games</td>
-            <td>Dynamic web pages, online applications</td>
-        </tr>
-    </table>
-    <br>
-    <h2>Client & Server Achitecture</h2>
-    <p>Client-server architecture is a cornerstone of modern system design, where the network infrastructure is structured to include multiple clients and a central server. In this model, clients are devices or programs that make requests for services or resources, while the server is a powerful machine or software that fulfills these requests. Communication between clients and the server follows a request-response protocol, such as HTTP/HTTPS for web services or SQL for database queries.</p>
-    <ol>
-        <li>This architecture allows for efficient data management and resource allocation by centralizing critical functions on the server, which can handle complex processing and large-scale data storage.</li>
-        <li>Clients manage user interactions and send specific requests to the server, which processes these requests and sends back appropriate responses.</li>
-        <li>The client-server architecture is highly scalable, as it can accommodate more clients by scaling the server's capabilities or adding additional servers.</li>
-        <li>This design is prevalent in various applications, including web services, database management, and email systems, providing a robust framework for developing and managing complex, distributed systems efficiently.</li>
-        
-    </ol>
-    <h2 style="color:aqua; background-color: black; text-align:centre">Client & Server interaction</h2>
-    <div style="display:flex; width:100%; margin-bottom:30px">
-        <h4>Image: </h4>
-        <img src="./image.png" alt="Client & Server Interaction">
+    <section>
+        <div>
+            <img src="./Prof pic.jpg" alt="Profile Picture" style="width:150px; height:150px" >
+            
+        </div>
+        <div><h2>Praveena Chintha | Web Developer</h2>
+            
+            <p>A recent B.Tech graduate in the stream of Electronics & Communication Engineerig at Anantha Lakshmi Institute of Technology & Sciences, Ananthapur, Andhra Pradesh</p></div>  
+            
+    </section>
+    
+    <hr>
+    <h2><mark>PROJECTS SECTION</mark></h2>
+    <div class="contains">
+        <div id="c1">
+            <h3>Project 1</h3>
+            
+            <h4>Portfolio Wegsite</h4>
+            <p>Image : </p>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11j_4MgqsWLcHR_ZlW9Bw2RphWA4Js00bCg&s" alt="Portfolio Website" style="width:300px;height:180px;">
+            <p>Address the necessity for individuals and professionals to showcase their work and skills online by developing a personal Portfolio Website to create a strong online presence.</p>
+            
+            <button>View</button>
+        </div>
+        <div id="c1">
+            <h3>Project 2</h3>
+            
+            <h4>Library Management System Project</h4>
+            <p>Image :</p>
+            <img src="https://i0.wp.com/www.lovelycoding.org/wp-content/uploads/2022/09/Library-Management-System.webp?fit=640%2C427&ssl=1" alt="" style="width:300px;height:180px;">
+            <p>Conventional libraries are having difficulty integrating various formats, including multimedia and e-resources, because of outdated management systems. Inefficient cataloguing, resource tracking bottlenecks, and a lack of analytics tools hinder librarians from optimizing collections and improving user experiences. To close the gap, libraries require a modern library management system with an intuitive interface, effective cataloguing, and analytics capabilities to resurrect libraries as vibrant centres of knowledge and community involvement in the digital era.</p>
+            <button>View</button>
+        </div>
+        <div id="c1">
+            <h3>Project 3</h3>
+            
+            <h4>Weather forecasting system</h4>
+            <p>Image :</p>
+            <img src="https://s3.amazonaws.com/oodles-blogs/blog-images/b7bbf02f-af80-441c-bbe2-a92b5e3a5035.jpeg" alt="" style="width:300px;height:180px;">
+            <p>This project can be appropriate for you if you are new to software development and are looking for simple project themes.
 
-    </div>
-    <br>
-    <div style="display:flex; width:100%; margin-bottom:30px">
-        <h4>Video: </h4>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/SwLdKeC8scE?si=SAwEKtZ_bgU0HPR_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-    <br>
-    <div>
-        <h4>Maps:</h4>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7858707.779328961!2d80.7610164!3d15.89546195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a3546f8ae93d47f%3A0x33d1bbbe95adcd83!2sAndhra%20Pradesh!5e0!3m2!1sen!2sin!4v1745824013625!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                Weather forecasting systems create precise predictions about the weather at a certain location and time by combining science and technology. Applications and systems for weather forecasting make predictions about the weather based on a variety of factors, including wind speed, humidity, temperature, pressure, and so forth.</p>
+            <button>view</button>    
+        </div>
     </div>
     <hr>
-    <h4 style="color:red">Quiz</h4>
-    <form action="">
-      <ol type="I">
-        <li><label for="What is the interaction between client and server?">What is the interaction between client and server?</label> 
-            <input type="text" name="What is the interaction between client and server?" id="What is the interaction between client and server?" required> 
-            <br></li>
-        <li><label for="What is the relationship between client and server?">What is the relationship between client and server?</label>
-            <input type="text" id="What is the relationship between client and server?" required>
-            <br></li>
-        <li><label for="What is client and server with an example?">What is client and server with an example?</label>
-            <input type="text" id="What is client and server with an example?"></li>
-        
-      </ol>  
-        <br>      
-        
-        <button>Submit</button>
-    </form>
+    <h2><mark>Project Information Table</mark></h2>
+    <article>
+        <table>
+            <tr>
+                <th>Project Name</th>
+                <th>Description</th>
+                <th>Tech Used</th>
+            </tr>
+            <tr>
+                <td>Project 1</td>
+                <td>Address the necessity for individuals and professionals to showcase their work and skills online by developing a personal Portfolio Website to create a strong online presence.</td>
+                <td>HTML,CSS</td>
+            </tr>
+            <tr>
+                <td>Project 2</td>
+                <td>Conventional libraries are having difficulty integrating various formats, including multimedia and e-resources, because of outdated management systems. Inefficient cataloguing, resource tracking bottlenecks, and a lack of analytics tools hinder librarians from optimizing collections and improving user experiences. To close the gap, libraries require a modern library management system with an intuitive interface, effective cataloguing, and analytics capabilities to resurrect libraries as vibrant centres of knowledge and community involvement in the digital era.</td>
+                <td>HTML,CSS,JS</td>
+            </tr>
+            <tr>
+                <td>Project 3</td>
+                
+                <td>This project can be appropriate for you if you are new to software development and are looking for simple project themes.
+                    Weather forecasting systems create precise predictions about the weather at a certain location and time by combining science and technology. Applications and systems for weather forecasting make predictions about the weather based on a variety of factors, including wind speed, humidity, temperature, pressure, and so forth.</td>
+                <td>HTML,CSS</td>
+            </tr>
+        </table>
+    </article>
+    <hr>
+    <br>
+    <fieldset>
+        <legend style="color:rgb(98, 0, 255);font-size:bold">CONTACT FORM</legend>
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" required placeholder="Enter your name">
+        </div>
+        <div>
+            <label for="email">Email-ID</label>
+            <input type="email" id="email" required placeholder="Enter your email">
+        </div>
+        <div>
+            <label for="subject">Subject</label>
+            <input type="" id="subject" required>
+        </div>
+        <div>
+            <label for="message">Message</label>
+            <textarea name="message" id="message" cols="100px" rows="1px"></textarea>
+        </div>
+        <div>
+            <button>Submit</button>
+        </div>
+    </fieldset>
+    <br><br>
+    <footer>
+        <p>&copy;2025 My Portfolio. All rights reserved.</p>
+    </footer>
 </body>
-</html>
