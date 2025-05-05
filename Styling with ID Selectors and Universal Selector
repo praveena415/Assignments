@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ID and Universal Selectors</title>
+  <style>
+       * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }  
+    #main-title {
+      font-size: 32px;
+      color: darkblue;
+      text-align: center;
+      margin: 20px 0;
+    }   
+    #subtitle {
+      font-size: 24px;
+      color: darkgreen;
+      margin: 10px 20px;
+    }  
+    p {
+      padding: 15px;
+      border: 1px solid #ccc;
+      margin: 10px 20px;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="main-title">Welcome to My Webpage</h1>
+  <h2 id="subtitle">Subheading Styled with an ID</h2>
+
+  <p>This is the first paragraph. It has padding and a soft border.</p>
+  <p>This is the second paragraph. It follows the same style.</p>
+  <p>This is the third paragraph to demonstrate consistency in styling.</p>
+
+</body>
+</html>
