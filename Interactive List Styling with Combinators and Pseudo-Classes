@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive List with Combinators</title>
+  <style>   
+    ol li:first-child {
+      font-weight: bold;
+    }    
+    ol li:first-child + li {
+      background-color: #e0f7fa;
+    }  
+    ol li:nth-child(3) ~ li {
+      font-style: italic;
+    }  
+    ol li:hover {
+      color: darkred;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <ol>
+    <li>Item One</li>
+    <li>Item Two</li>
+    <li>Item Three</li>
+    <li>Item Four</li>
+    <li>Item Five</li>
+  </ol>
+</body>
+</html>
