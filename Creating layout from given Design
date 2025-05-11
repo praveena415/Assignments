@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox Layout</title>
+  <style>
+    /* Reset default margins and paddings */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body and HTML setup */
+    html, body {
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Flex container for the entire layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    /* Header styling */
+    header {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 24px;
+    }
+
+    /* Main content area */
+    main {
+      display: flex;
+      flex: 1;
+      background-color: #f4f4f4;
+    }
+
+    /* Sidebar styling */
+    aside {
+      width: 200px;
+      background-color: #333;
+      color: white;
+      padding: 15px;
+      height: 100%;
+    }
+
+    /* Main content styling */
+    .content {
+      flex: 1;
+      padding: 15px;
+    }
+
+    /* Footer styling */
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      Header
+    </header>
+    <main>
+      <aside>
+        Sidebar
+      </aside>
+      <div class="content">
+        Main Content
+      </div>
+    </main>
+    <footer>
+      Footer
+    </footer>
+  </div>
+
+</body>
+</html>
