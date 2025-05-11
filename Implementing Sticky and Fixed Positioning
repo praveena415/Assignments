@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sticky Header & Fixed Footer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      padding-bottom: 60px; /* Space for the fixed footer */
+    }
+
+    /* Sticky Header */
+    header {
+      position: sticky;
+      top: 0;
+      background-color: #333;
+      color: white;
+      padding: 15px 20px;
+      font-size: 1.2rem;
+      z-index: 1000;
+    }
+
+    /* Main Content */
+    main {
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    main p {
+      margin-bottom: 16px;
+    }
+
+    /* Fixed Footer */
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 1rem;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    Sticky Header: Always visible at the top while scrolling
+  </header>
+
+  <main>
+    <p>This is a sample paragraph to demonstrate scrolling content.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+    <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+    <p>Donec ullamcorper nulla non metus auctor fringilla.</p>
+    <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</p>
+    <p>Curabitur blandit tempus porttitor.</p>
+    <p>Etiam porta sem malesuada magna mollis euismod.</p>
+    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+    <p>Aenean lacinia bibendum nulla sed consectetur.</p>
+    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+    <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+  </main>
+
+  <footer>
+    Fixed Footer: Always stays at the bottom of the viewport
+  </footer>
+
+</body>
+</html>
