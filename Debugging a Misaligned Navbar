@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fixed Flexbox Navbar</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between; /* space between logo and links */
+      align-items: center;            /* vertically center items */
+      background-color: #333;
+      padding: 10px 20px;
+    }
+
+    .logo {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .links {
+      display: flex;
+      gap: 20px; /* even horizontal spacing between links */
+    }
+
+    .links a {
+      text-decoration: none;
+      color: white;
+      padding: 5px 10px;
+      transition: background 0.3s ease;
+    }
+
+    .links a:hover {
+      background-color: #444;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="logo">Logo</div>
+    <div class="links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+
+</body>
+</html>
