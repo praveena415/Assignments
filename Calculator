@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Button Layout</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      grid-gap: 20px;
+      justify-content: center;
+    }
+
+    .grid-button {
+      padding: 15px 0;
+      text-align: center;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .grid-button:hover {
+      background-color: #2ecc71;
+    }
+
+    /* Responsive for small screens */
+    @media (max-width: 600px) {
+      .grid-container {
+        grid-template-columns: repeat(2, 100px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid-container">
+    <button class="grid-button">1</button>
+    <button class="grid-button">2</button>
+    <button class="grid-button">3</button>
+    <button class="grid-button">4</button>
+    <button class="grid-button">5</button>
+    <button class="grid-button">6</button>
+    <button class="grid-button">7</button>
+    <button class="grid-button">8</button>
+  </div>
+
+</body>
+</html>
