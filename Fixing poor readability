@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Readability</title>
+  <style>
+    /* Base (mobile-first) styles */
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 20px;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    h1, h2, p {
+      margin-bottom: 1em;
+    }
+
+    /* Larger screens (600px and up) */
+    @media (min-width: 600px) {
+      body {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Responsive Webpage</h1>
+  <p>
+    This is an example of a mobile-first responsive webpage that adjusts its font size for better readability.
+  </p>
+  <h2>Why It Matters</h2>
+  <p>
+    On smaller screens, text should be easy to read without zooming or horizontal scrolling. This layout uses media queries to ensure that.
+  </p>
+</body>
+</html>
