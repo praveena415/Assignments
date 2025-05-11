@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSS Box Model Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    .box {
+      color: white;
+      font-size: 16px;
+    }
+
+    /* Box 1: box-sizing: content-box (default) */
+    .box1 {
+      background-color: #3498db;
+      width: 200px;
+      padding: 20px;
+      border: 5px solid #1c6ea4;
+      margin: 20px;
+      box-sizing: content-box; /* Padding and border are added outside the width */
+    }
+
+    /* Box 2: box-sizing: border-box */
+    .box2 {
+      background-color: #2ecc71;
+      width: 200px;
+      padding: 20px;
+      border: 5px dashed #1e8449;
+      margin: 30px;
+      box-sizing: border-box; /* Padding and border are included within the width */
+    }
+
+    /* Box 3: no box-sizing explicitly set (default is content-box) */
+    .box3 {
+      background-color: #e74c3c;
+      width: 250px;
+      padding: 10px 30px;
+      border: 10px double #c0392b;
+      margin: 10px 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box box1">
+    <strong>Box 1</strong><br>
+    box-sizing: <code>content-box</code><br>
+    Width is exclusive of padding and border.
+  </div>
+
+  <div class="box box2">
+    <strong>Box 2</strong><br>
+    box-sizing: <code>border-box</code><br>
+    Width includes padding and border.
+  </div>
+
+  <div class="box box3">
+    <strong>Box 3</strong><br>
+    No explicit box-sizing (defaults to <code>content-box</code>).<br>
+    Uses different padding and double border.
+  </div>
+
+</body>
+</html>
