@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Investors</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .investor-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .investor-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .investor-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .investor-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .investor-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    .investor-role {
+      font-size: 1rem;
+      color: #777;
+    }
+
+    /* Medium screens (600px to 1024px) */
+    @media (min-width: 600px) {
+      .investor-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Large screens (1025px and above) */
+    @media (min-width: 1025px) {
+      .investor-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Our Investors</h1>
+  <div class="investor-container">
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/vijay-shekhar-sharma.jpg" alt="Vijay Shekhar Sharma">
+      <div class="investor-name">Vijay Shekhar Sharma</div>
+      <div class="investor-role">Founder & CEO, Paytm</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/kunal-shah.jpg" alt="Kunal Shah">
+      <div class="investor-name">Kunal Shah</div>
+      <div class="investor-role">Founder, CRED</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/amrish-rau.jpg" alt="Amrish Rau">
+      <div class="investor-name">Amrish Rau</div>
+      <div class="investor-role">CEO, Pine Labs</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/sampad-swain.jpg" alt="Sampad Swain">
+      <div class="investor-name">Sampad Swain</div>
+      <div class="investor-role">Co-Founder & CEO, Instamojo</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/ankush-sachdeva.jpg" alt="Ankush Sachdeva">
+      <div class="investor-name">Ankush Sachdeva</div>
+      <div class="investor-role">Co-Founder & CEO, ShareChat</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/bhanu-pratap-singh.jpg" alt="Bhanu Pratap Singh">
+      <div class="investor-name">Bhanu Pratap Singh</div>
+      <div class="investor-role">Co-Founder & CTO, ShareChat</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/farid-ahsan.jpg" alt="Farid Ahsan">
+      <div class="investor-name">Farid Ahsan</div>
+      <div class="investor-role">Co-Founder & COO, ShareChat</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/amit-kumar-agarwal.jpg" alt="Amit Kumar Agarwal">
+      <div class="investor-name">Amit Kumar Agarwal</div>
+      <div class="investor-role">Founder & CEO, NoBroker</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/akhil-gupta.jpg" alt="Akhil Gupta">
+      <div class="investor-name">Akhil Gupta</div>
+      <div class="investor-role">Founder & CTO, NoBroker</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/saurabh-garg.jpg" alt="Saurabh Garg">
+      <div class="investor-name">Saurabh Garg</div>
+      <div class="investor-role">Co-Founder & CBO, NoBroker</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/vipin-pathak.jpg" alt="Vipin Pathak">
+      <div class="investor-name">Vipin Pathak</div>
+      <div class="investor-role">Co-Founder & CEO, Care24</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/ramakant-sharma.jpg" alt="Ramakant Sharma">
+      <div class="investor-name">Ramakant Sharma</div>
+      <div class="investor-role">Founder, LivSpace</div>
+    </div>
+    <div class="investor-card">
+      <img src="https://www.masaischool.com/images/investors/mohit-tandon.jpg" alt="Mohit Tandon">
+      <div class="
+::contentReference[oaicite:0]{index=0}
+ 
