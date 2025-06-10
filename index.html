@@ -1,190 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTFOLIO</title>
-    <link rel="stylesheet" href="./style.css">
-    <style>
-        body{
-            margin-top: 100px;
-            margin-bottom: 100px;
-            margin-left: 100px;
-            margin-right:100px;
-            background: linear-gradient(rgb(240, 209, 123),rgb(155, 155, 233),rgb(140, 224, 224),pink);
-        }
-        .contains{
-            display:grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr;
-            gap:20px;
-        }
-        section{
-            display:grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr;
-            gap:50px;
-        }
-        header{
-            background-color: rgb(13, 13, 90);
-            color:white;
-            text-align:center;
-            font-weight:bold;
-            
-            height:80px;
-            padding-top: 30px;
-        }
-        button:hover{
-            color:greenyellow;
-            background-color: rgb(128, 128, 248);
-        }
-        button:active{
-            color:rgb(15, 75, 15);
-            background-color: rgb(8, 8, 148);
-        }
-        button::before{
-            color:rgb(21, 21, 124);
-            background-color: rgb(4, 4, 34);
-        }
-        table{
-            border-collapse: collapse;
-            border:2px solid;          
-        }
-        td{
-            border-collapse: collapse;
-            border:2px solid;
-            color:white;
-            background-color: black;
-        }
-        th{
-            border-collapse: collapse;
-            border:2px solid;
-            background-color: aqua;
-        }
-        
-        
-    </style>
+  <meta charset="UTF-8">
+  <title>User Authentication</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+   <style>
+    body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+ }
+
+ .container {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  width: 300px;
+ }
+
+ h2, h3 {
+  text-align: center;
+ }
+
+ .form {
+  margin-bottom: 20px;
+ }
+
+ input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  box-sizing: border-box;
+ }
+
+ button {
+  width: 100%;
+  padding: 10px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+ }
+
+ button:hover {
+  background: #45a049;
+ }
+
+ #message {
+  text-align: center;
+  margin-top: 10px;
+  color: red;
+ }
+
+   </style>
 </head>
 <body>
-    <header>
-        <span style="font-size:30px;">PORTFOLIO</span>
-        <br>
-        <br>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Conatct</a>
-        </nav>
-    </header>
-    
-    <br>
-    <section class="s1">
-        <span class="material-symbols-outlined">
-            mail
-        </span>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mail" />
-    </section>
-    
-    <br>
-    <section>
-        <div>
-            <img src="./Prof pic.jpg" alt="Profile Picture" style="width:150px; height:150px" >
-            
-        </div>
-        <div><h2>Praveena Chintha | Web Developer</h2>
-            
-            <p>A recent B.Tech graduate in the stream of Electronics & Communication Engineerig at Anantha Lakshmi Institute of Technology & Sciences, Ananthapur, Andhra Pradesh</p></div>  
-            
-    </section>
-    
-    <hr>
-    <h2><mark>PROJECTS SECTION</mark></h2>
-    <div class="contains">
-        <div id="c1">
-            <h3>Project 1</h3>
-            
-            <h4>Portfolio Wegsite</h4>
-            <p>Image : </p>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11j_4MgqsWLcHR_ZlW9Bw2RphWA4Js00bCg&s" alt="Portfolio Website" style="width:300px;height:180px;">
-            <p>Address the necessity for individuals and professionals to showcase their work and skills online by developing a personal Portfolio Website to create a strong online presence.</p>
-            
-            <button>View</button>
-        </div>
-        <div id="c1">
-            <h3>Project 2</h3>
-            
-            <h4>Library Management System Project</h4>
-            <p>Image :</p>
-            <img src="https://i0.wp.com/www.lovelycoding.org/wp-content/uploads/2022/09/Library-Management-System.webp?fit=640%2C427&ssl=1" alt="" style="width:300px;height:180px;">
-            <p>Conventional libraries are having difficulty integrating various formats, including multimedia and e-resources, because of outdated management systems. Inefficient cataloguing, resource tracking bottlenecks, and a lack of analytics tools hinder librarians from optimizing collections and improving user experiences. To close the gap, libraries require a modern library management system with an intuitive interface, effective cataloguing, and analytics capabilities to resurrect libraries as vibrant centres of knowledge and community involvement in the digital era.</p>
-            <button>View</button>
-        </div>
-        <div id="c1">
-            <h3>Project 3</h3>
-            
-            <h4>Weather forecasting system</h4>
-            <p>Image :</p>
-            <img src="https://s3.amazonaws.com/oodles-blogs/blog-images/b7bbf02f-af80-441c-bbe2-a92b5e3a5035.jpeg" alt="" style="width:300px;height:180px;">
-            <p>This project can be appropriate for you if you are new to software development and are looking for simple project themes.
+  <div class="container">
+    <h2>User Authentication</h2>
 
-                Weather forecasting systems create precise predictions about the weather at a certain location and time by combining science and technology. Applications and systems for weather forecasting make predictions about the weather based on a variety of factors, including wind speed, humidity, temperature, pressure, and so forth.</p>
-            <button>view</button>    
-        </div>
+    <div class="form" id="register-form">
+      <h3>Register</h3>
+      <input type="text" id="register-username" placeholder="Username" />
+      <input type="password" id="register-password" placeholder="Password" />
+      <button onclick="register()">Register</button>
     </div>
-    <hr>
-    <h2><mark>Project Information Table</mark></h2>
-    <article>
-        <table>
-            <tr>
-                <th>Project Name</th>
-                <th>Description</th>
-                <th>Tech Used</th>
-            </tr>
-            <tr>
-                <td>Project 1</td>
-                <td>Address the necessity for individuals and professionals to showcase their work and skills online by developing a personal Portfolio Website to create a strong online presence.</td>
-                <td>HTML,CSS</td>
-            </tr>
-            <tr>
-                <td>Project 2</td>
-                <td>Conventional libraries are having difficulty integrating various formats, including multimedia and e-resources, because of outdated management systems. Inefficient cataloguing, resource tracking bottlenecks, and a lack of analytics tools hinder librarians from optimizing collections and improving user experiences. To close the gap, libraries require a modern library management system with an intuitive interface, effective cataloguing, and analytics capabilities to resurrect libraries as vibrant centres of knowledge and community involvement in the digital era.</td>
-                <td>HTML,CSS,JS</td>
-            </tr>
-            <tr>
-                <td>Project 3</td>
-                
-                <td>This project can be appropriate for you if you are new to software development and are looking for simple project themes.
-                    Weather forecasting systems create precise predictions about the weather at a certain location and time by combining science and technology. Applications and systems for weather forecasting make predictions about the weather based on a variety of factors, including wind speed, humidity, temperature, pressure, and so forth.</td>
-                <td>HTML,CSS</td>
-            </tr>
-        </table>
-    </article>
-    <hr>
-    <br>
-    <fieldset>
-        <legend style="color:rgb(98, 0, 255);font-size:bold">CONTACT FORM</legend>
-        <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" required placeholder="Enter your name">
-        </div>
-        <div>
-            <label for="email">Email-ID</label>
-            <input type="email" id="email" required placeholder="Enter your email">
-        </div>
-        <div>
-            <label for="subject">Subject</label>
-            <input type="" id="subject" required>
-        </div>
-        <div>
-            <label for="message">Message</label>
-            <textarea name="message" id="message" cols="100px" rows="1px"></textarea>
-        </div>
-        <div>
-            <button>Submit</button>
-        </div>
-    </fieldset>
-    <br><br>
-    <footer>
-        <p>&copy;2025 My Portfolio. All rights reserved.</p>
-    </footer>
+
+    <div class="form" id="login-form">
+      <h3>Login</h3>
+      <input type="text" id="login-username" placeholder="Username" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
+</html>
