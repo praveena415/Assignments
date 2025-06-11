@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>User Authentication</title>
-  <!-- <link rel="stylesheet" href="style.css"> -->
-   <style>
+  <style>
     body {
   font-family: Arial, sans-serif;
   background: #f4f4f4;
@@ -12,24 +11,19 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
- }
-
- .container {
+ } .container {
   background: white;
   padding: 20px 30px;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
   width: 300px;
  }
-
  h2, h3 {
   text-align: center;
  }
-
  .form {
   margin-bottom: 20px;
  }
-
  input {
   display: block;
   width: 100%;
@@ -37,7 +31,6 @@
   margin: 8px 0;
   box-sizing: border-box;
  }
-
  button {
   width: 100%;
   padding: 10px;
@@ -51,36 +44,30 @@
  button:hover {
   background: #45a049;
  }
-
  #message {
   text-align: center;
   margin-top: 10px;
   color: red;
  }
-
    </style>
 </head>
 <body>
   <div class="container">
     <h2>User Authentication</h2>
-
     <div class="form" id="register-form">
       <h3>Register</h3>
       <input type="text" id="register-username" placeholder="Username" />
       <input type="password" id="register-password" placeholder="Password" />
       <button onclick="register()">Register</button>
     </div>
-
     <div class="form" id="login-form">
       <h3>Login</h3>
       <input type="text" id="login-username" placeholder="Username" />
       <input type="password" id="login-password" placeholder="Password" />
       <button onclick="login()">Login</button>
     </div>
-
     <div id="message"></div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
