@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic List</title>
+  <style>
+    
+    body {
+      background-color: antiquewhite;
+    }
+    
+  </style>
+</head>
+<body>
+    <h3 style="text-align: center;">TO DO LIST</h3>
+  <ul id="myList">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+
+  <button id="addBtn">Add Item</button>
+
+  <script>
+    const ul = document.querySelector('#myList');
+    const button = document.getElementById('addBtn');
+
+    button.addEventListener('click', () => {
+      const newItem = document.createElement('li');
+      const count = ul.children.length + 1;
+
+      newItem.textContent = `New Item ${count}`;
+
+      if (count % 2 === 1) {
+        newItem.style.color = 'blue';
+        newItem.style.fontWeight = 'bold';
+      } else {
+        newItem.style.color = 'red';
+        newItem.style.fontStyle = 'italic';
+      }
+
+      ul.appendChild(newItem);
+    });
+  </script>
+
+</body>
+</html>
