@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: aquamarine;
+        }
+        #heading{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 id = 'heading'>Title</h1>
+    <h2>Problem</h2>
+    <p>Create a basic HTML page to demonstrate your understanding of the DOM and its structure. Your task is to write JavaScript that performs the following actions:</p>
+    <div class="container">
+        <ol>
+            <li>Select the element by its id and change its text content to "Welcome to the DOM World!".</li>
+            <li>Select all elements using getElementsByTagName and set their text color to blue.</li>
+            <li>Use querySelector to select the first with the class container and change its background color to yellow.</li>
+        </ol>
+    </div>
+    <div>
+        <h3>Submission</h3>
+        <p>Submit your Masai GitHub repository link containing the HTML and JavaScript files.</p>
+    </div>    
+</body>
+</html>
+<script>
+    let heading = document.getElementById('heading')
+    heading.textContent='Understanding and Navigating the DOM'
+
+    let para = document.getElementsByTagName('p')
+    for(let i =0; i<para.length; i++){
+        para[i].style.color = 'blue'
+    }
+
+    let div = document.querySelector('.container')
+    div.style.background = 'yellow'
+</script>
