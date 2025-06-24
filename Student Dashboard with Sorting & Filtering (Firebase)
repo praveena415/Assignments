@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard - Firebase</title>
+  <style>
+    input, select, button { margin: 5px; padding: 6px; }
+    .student { background: #e0f2fe; margin: 10px; padding: 10px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+
+  <h2>Student Dashboard</h2>
+
+  <input type="text" id="name" placeholder="Name">
+  <input type="number" id="age" placeholder="Age">
+  <select id="grade">
+    <option>A</option><option>B</option><option>C</option>
+  </select>
+  <label><input type="checkbox" id="enrolled"> Enrolled</label>
+  <button onclick="addStudent()">Add</button>
+  <button onclick="updateStudent()">Update</button>
+
+  <hr>
+
+  <label>Filter Grade:
+    <select id="filterGrade" onchange="renderFiltered()">
+      <option value="">All</option>
+      <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+    </select>
+  </label>
+
+  <label>Filter Enrolled:
+    <select id="filterEnroll" onchange="renderFiltered()">
+      <option value="">All</option>
+      <option value="true">Enrolled</option>
+      <option value="false">Not Enrolled</option>
+    </select>
+  </label>
+
+  <label>Sort by:
+    <select id="sortBy" onchange="renderFiltered()">
+      <option value="">None</option>
+      <option value="name">Name (A-Z)</option>
+      <option value="ageAsc">Age ↑</option>
+      <option value="ageDesc">Age ↓</option>
+    </select>
+  </label>
+
+  <div id="list"></div>
+
+  <script>
+    const firebaseConfig = {
+      };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database().ref("students");
+
+    let allStudents = [];
+    let editingKey = "";
