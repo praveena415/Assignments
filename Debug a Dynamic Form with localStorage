@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Preferences</title>
+  <style>
+    body.light {
+      background-color: #ffffff;
+      color: #000000;
+    }
+    body.dark {
+      background-color: #121212;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <form id="preferencesForm">
+    <label for="theme">Theme:</label>
+    <select id="themeSelect">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+
+    <label for="language">Language:</label>
+    <select id="languageSelect">
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+    </select>
+
+    <label for="notifications">Notifications:</label>
+    <input type="checkbox" id="notificationsCheckbox">
+
+    <button type="submit">Save Preferences</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('preferencesForm');
+    const themeSelect = document.getElementById('themeSelect');
+    const languageSelect = document.getElementById('languageSelect');
+    const notificationsCheckbox = document.getElementById('notificationsCheckbox');
+
+    window.onload = () => {
+      const storedPreferences = localStorage.getItem('preferences');
+      if (storedPreferences) {
+        const preferences = JSON.parse(storedPreferences);
+        themeSelect.value = preferences.theme;
+        languageSelect.value = preferences.language;
+        notificationsCheckbox.checked = preferences.notifications;
+
+        document.body.className = preferences.theme;
+      }
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const preferences = {
+        theme: themeSelect.value,
+        language: languageSelect.value,
+        notifications: notificationsCheckbox.checked
+      };
+
+      localStorage.setItem('preferences', JSON.stringify(preferences));
+      alert('Preferences Saved!');
+
+      document.body.className = preferences.theme;
+    });
+  </script>
+</body>
+</html>
