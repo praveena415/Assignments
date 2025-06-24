@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic Firebase CRUD</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f0f9ff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #2563eb;
+    }
+
+    input {
+      padding: 8px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 8px 15px;
+      margin: 5px;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .add-btn { background-color: #10b981; }
+    .update-btn { background-color: #f59e0b; }
+    .delete-btn { background-color: #ef4444; }
+    .edit-btn { background-color: #3b82f6; }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #e0f2fe;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Firebase Realtime DB CRUD App</h2>
+
+  <input type="text" id="name" placeholder="Name">
+  <input type="email" id="email" placeholder="Email">
+  <button class="add-btn" onclick="addUser()">Add User</button>
+  <button class="update-btn" onclick="updateUser()">Update User</button>
+
+  <h3>User List</h3>
+  <ul id="userList"></ul>
+
+  
+  <script>
+    const firebaseConfig = {
+      
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database().ref("users");
+
+    function addUser() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const id = db.push().key;
+      db.child(id).set({ name, email });
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+    }
