@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Meme Catalog</title>
+  <style>
+    body { font-family: Arial; text-align: center; }
+    img { width: 200px; height: auto; margin: 10px; border-radius: 5px; }
+    .meme { border: 1px solid #ccc; padding: 10px; margin: 10px; display: inline-block; }
+    button { margin: 5px; padding: 5px; }
+  </style>
+</head>
+<body>
+
+  <h2>Simple Meme Catalog</h2>
+  <button onclick="loadMemes()">Load Memes</button>
+
+  <h3>All Memes</h3>
+  <div id="memeList"></div>
+
+  <h3>Favorites</h3>
+  <div id="favorites"></div>
+
+  <script>
+    let memes = [];
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    function loadMemes() {
+      fetch("https://api.imgflip.com/get_memes")
+        .then(res => res.json())
+        .then(data => {
+          memes = data.data.memes.slice(0, 10); // only first 10 memes
+          showMemes();
+        });
+    }
+
+    function showMemes() {
+      const list = document.getElementById("memeList");
+      list.innerHTML = "";
+      memes.forEach(m => {
+        const div = document.createElement("div");
+        div.className = "meme";
+        div.innerHTML = `
+          <p>${m.name}</p>
+          <img src="${m.url}" alt="${m.name}">
+          <br>
+          <button onclick='addToFavorites(${JSON.stringify(m)})'>Add to Favorites</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function addToFavorites(meme) {
+      if (!favorites.find(f => f.id === meme.id)) {
+        favorites.push(meme);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        showFavorites();
+      }
+    }
+
+    function showFavorites() {
+      const fav = document.getElementById("favorites");
+      fav.innerHTML = "";
+      favorites.forEach(f => {
+        fav.innerHTML += `
+          <div class="meme">
+            <p>${f.name}</p>
+            <img src="${f.url}" alt="${f.name}">
+          </div>
+        `;
+      });
+    }
+
+  
+    showFavorites();
+  </script>
+
+</body>
+</html>
