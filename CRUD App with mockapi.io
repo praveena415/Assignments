@@ -5,7 +5,7 @@
   <style>
     body { font-family: Arial; text-align: center; }
     input, button { margin: 5px; padding: 8px; }
-    .student { background: #dbeafe; margin: 10px; padding: 10px; border-radius: 5px; }
+    
     button { cursor: pointer; }
   </style>
 </head>
