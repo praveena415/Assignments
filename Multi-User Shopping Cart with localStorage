@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multi-User Shopping Cart</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { margin: 5px; padding: 8px; }
+    .cart-item { margin: 10px 0; background: #e0f7fa; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+
+  <h2>Shopping Cart Login</h2>
+  <input type="text" id="username" placeholder="Enter unique username">
+  <button onclick="login()">Login</button>
+
+  <div id="cartSection" style="display:none;">
+    <h3 id="welcome"></h3>
+    <input type="text" id="itemName" placeholder="Item name">
+    <input type="number" id="itemPrice" placeholder="Price">
+    <input type="number" id="itemQty" placeholder="Quantity">
+    <button onclick="addItem()">Add Item</button>
+
+    <div id="cartList"></div>
+    <h4 id="totalCost">Total: $0</h4>
+  </div>
+
+  <script>
+    let currentUser = "";
+    let cartData = {};
+
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      if (!username) return alert("Username cannot be empty");
+      
+      const allData = JSON.parse(localStorage.getItem("shoppingCarts")) || {};
+      if (!allData[username]) {
+        allData[username] = [];
+      }
+
+      currentUser = username;
+      cartData = allData;
+      document.getElementById("cartSection").style.display = "block";
+      document.getElementById("welcome").innerText = "Welcome, " + currentUser;
+      renderCart();
+    }
