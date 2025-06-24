@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple List with localStorage</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; margin: 5px; }
+    ul { padding-left: 20px; }
+    li { margin: 6px 0; background: #e0f7fa; padding: 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <h2>My Notes</h2>
+  <input type="text" id="itemInput" placeholder="Enter a note">
+  <button onclick="addItem()">Add</button>
+
+  <ul id="itemList"></ul>
+
+  <script>
+    let items = [];
+
+    window.onload = function() {
+      const saved = localStorage.getItem("myNotes");
+      if (saved) {
+        items = JSON.parse(saved);
+        renderList();
+      }
+    };
+
+    function renderList() {
+      const list = document.getElementById("itemList");
+      list.innerHTML = "";
+      items.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
+    }
+</script>
+</body>
+
