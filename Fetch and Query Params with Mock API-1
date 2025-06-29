@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch and Query Params with Mock API</title>
+    <style>       
+        body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        }
+        label, select, input {
+        margin: 10px;
+        }
+        #status {
+        margin: 10px 0;
+        font-weight: bold;
+        }
+        #productList {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+        }
+        .product {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        }
+        .product img {
+        max-width: 100%;
+        height: 150px;
+        object-fit: cover;
+        margin-bottom: 10px;
+        }
+    </style>
+    
+</head>
+<body>
+    <h2>Product Search</h2>
+    <label >Category:
+        <select id="category">
+            <option value="electronics">Electronics</option>
+            <option value="clothing">Clothing</option>
+            <option value="books">Books</option>
+        </select>
+    </label>
+
+    <label>Min Price:
+        <input type="number" id="minPrice" placeholder="e.g. 500">
+    </label>
+
+    <label>Max Price:
+        <input type="number" id="maxPrice" placeholder="e.g. 5000">
+    </label>
+
+    <button onclick="fetchProducts()">Search</button>
+
+    <div id="status"></div>
+    <div id="productList" class="grid"></div>
+
+</body>
+</html>
+<script>
+  async function fetchProducts() {
+    const category = document.getElementById('category').value;
+    const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+    const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+    const productList = document.getElementById('productList');
+    const status = document.getElementById('status');
+
+    productList.innerHTML = "";
+    status.textContent = "Loading...";
+
+    // ❌ Removed ?category= query since MockAPI may not filter on it
+    const url = `https://68612cde8e74864084452303.mockapi.io/products/data`;
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to fetch data: ${res.status}`);
+
+      let data = await res.json();
+      console.log("Fetched Data:", data);
+
+      // Optional: Filter client-side by category if category exists in object
+      const filteredByCategory = data.filter(item => item.category === category);
+
+      data = filteredByCategory
+        .filter(ele => ele.price && !isNaN(ele.price))
+        .map(ele => ({
+          ...ele,
+          price: parseFloat(ele.price)
+        }))
+        .filter(ele => ele.price >= minPrice && ele.price <= maxPrice)
+        .sort((a, b) => a.price - b.price);
+
+      if (data.length === 0) {
+        status.textContent = "No product available";
+        return;
+      }
+
+      status.textContent = "";
+
+      data.forEach(ele => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <img src="${ele.image}" alt="${ele.name}">
+          <h4>${ele.name}</h4>
+          <p>₹${ele.price}</p>
+        `;
+        productList.appendChild(div);
+      });
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      status.textContent = "Something went wrong";
+    }
+  }
+</script>
