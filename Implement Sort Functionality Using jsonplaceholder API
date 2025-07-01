@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Debounced OMDB Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+    input {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+    }
+    #results {
+      margin-top: 20px;
+    }
+    .movie {
+      padding: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>OMDB Movie Search</h2>
+  <input type="text" id="searchInput" placeholder="Type movie name..." />
+  <div id="results"></div>
+
+  <script>
+    const input = document.getElementById("searchInput");
+    const resultsDiv = document.getElementById("results");
+    let debounceTimer;
+
+    input.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+
+      debounceTimer = setTimeout(() => {
+        const query = input.value.trim();
+
+        if (query.length === 0) {
+          resultsDiv.innerHTML = "";
+          return;
+        }
+
+        fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.Response === "True") {
+              const movies = data.Search;
+              resultsDiv.innerHTML = movies.map(movie => `
+                <div class="movie">${movie.Title}</div>
+              `).join("");
+            } else {
+              resultsDiv.innerHTML = `<div>No movies found.</div>`;
+            }
+          })
+          .catch(error => {
+            resultsDiv.innerHTML = `<div>Error fetching movies.</div>`;
+            console.error("Fetch error:", error);
+          });
+      }, 500); 
+    });
+  </script>
+
+</body>
+</html>
