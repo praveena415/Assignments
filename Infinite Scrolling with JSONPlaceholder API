@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Infinite Scroll Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f0f0f0;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: white;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .loader {
+      text-align: center;
+      padding: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Infinite Scroll Gallery</h1>
+  <div class="container" id="image-container"></div>
+  <div class="loader" id="loader">Loading...</div>
+
+  <script>
+    const container = document.getElementById('image-container');
+    const loader = document.getElementById('loader');
+
+    let limit = 20;
+    let page = 1;
+    let loading = false;
+
+    async function loadImages() {
+      if (loading) return;
+      loading = true;
+      loader.style.display = 'block';
+
+      try {
+        const res = await fetch(`https://jsonplaceholder.typicode.com/photos?_limit=${limit}&_page=${page}`);
+        const data = await res.json();
+
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${item.thumbnailUrl}" alt="${item.title}">
+            <p>${item.title}</p>
+          `;
+          container.appendChild(card);
+        });
+
+        page++;
+        loading = false;
+        loader.style.display = 'none';
+      } catch (err) {
+        console.error('Error loading images:', err);
+        loader.textContent = 'Error loading images.';
+      }
+    }
+
+  </script>
+
+</body>
+</html>
