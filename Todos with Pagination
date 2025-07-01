@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="inp">Enter Task :</label>
+    <input id="inp" type="text", placeholder="enter task"><br>
+    <button onclick="createTask()">Add Task</button><br>
+    <button onclick="deleteTask()">Delete Task</button><br>
+    <button onclick="completeTask()">Complete</button><br>
+    <ul id="list"></ul>
+</body>
+</html>
+<script>
+    const list=document.getElementById('list')
+    function createTask(){
+        const inp=document.getElementById('inp')
+        if(inp.value==""){
+            alert("Please Type Something!")
+        }
+        else{
+            let task=document.createElement('li')
+            task.textContent=inp.value;
+            list.appendChild(task);
+        }
+    }
+
+    function deleteTask(){
+        if(list.lastChild){
+            list.removeChild(list.lastChild)
+        }
+        else{
+            alert("list is empty!")
+        }
+    }
+
+    function completeTask(){
+        if(list.lastElementChild){
+            list.lastElementChild.style.textDecoration = 'line-through';
+        }
+        else{
+            alert("list is empty!")
+        }
+    }
+</script>
