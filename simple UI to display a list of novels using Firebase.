@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+</head>
+<body>
+  <label for="inp">Enter Task</label>
+  <input id="inp" type="text" placeholder="enter task">
+  <ul id="tasks"></ul>
+  <h3>All Tasks:</h3>
+  <div id="displayTasks"></div>
+  <h3>Completed Tasks:</h3>
+  <div id="completed"></div>
+  <h3>Incompleted Tasks:</h3>
+  <div id="incompleted"></div>
+  <h3>Task Counter</h3>
+  <div id="counter"></div>
+  <h3>Sorted Tasks</h3>
+  <div id="sort"></div>
+
+  <button onclick="addTask()">Add Task</button>
+  <button onclick="allTasks()">All Tasks</button>
+  <button onclick="completedTasks()">Completed Tasks</button>
+  <button onclick="incompleteTasks()">Incomplete Tasks</button>
+  <button onclick="taskCounter()">Counter</button>
+  <button onclick="sortTasks()">Sort Tasks</button>
+
+  <script>
+    function addTask(){
+      let inp = document.getElementById('inp').value;
+
+      let checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+
+      let task = document.createElement('li');
+
+      checkbox.onchange = function(){
+        if(this.checked){
+          task.style.fontStyle = "italic";
+        } else {
+          task.style.fontStyle = "normal";
+        }
+      };
+
+      let del = document.createElement('button');
+      del.textContent = "delete";
+      del.onclick = function(){
+        document.getElementById('tasks').removeChild(task);
+      };
+
+      document.getElementById('tasks').appendChild(task);
+      document.getElementById('inp').value = "";
+    }
+
+    function allTasks(){
+      let tasks = document.getElementById('tasks');
+      let displaytasks = document.getElementById('displayTasks');
+      displaytasks.innerHTML = "";
+      if(tasks.children.length == 0){
+        alert("oops! there are no tasks here.");
+        return;
+      }
+
+      let alltasks = document.createElement('ul');
+      Array.from(tasks.children).forEach((ele)=>{
+        let child = document.createElement('li');
+        let span = ele.querySelector('span');
+        child.textContent = span ? span.textContent : "[No Text]";
+        alltasks.appendChild(child);
+      });
+
+      displaytasks.appendChild(alltasks);
+    }
+
+    function completedTasks(){
+      let complete = document.getElementById('completed');
+      let tasks = document.getElementById('tasks');
+      complete.innerHTML = "";
+
+      let ul = document.createElement('ul');
+      Array.from(tasks.children).forEach((ele)=>{
+        let checkbox = ele.querySelector('input[type="checkbox"]');
+        let span = ele.querySelector('span');
+        if(checkbox && checkbox.checked){
+          let li = document.createElement('li');
+          li.textContent = span ? span.textContent : "[No Text]";
+          ul.appendChild(li);
+        }
+      });
+
+      if(ul.children.length == 0){
+        alert("there is no completed tasks.");
+      } else {
+        complete.appendChild(ul);
+      }
+    }
+
+    function incompleteTasks(){
+      let incomplete = document.getElementById('incompleted');
+      let tasks = document.getElementById('tasks');
+      incomplete.innerHTML = "";
+
+      let ul = document.createElement('ul');
+      Array.from(tasks.children).forEach((ele)=>{
+        let checkbox = ele.querySelector('input[type="checkbox"]');
+        let span = ele.querySelector('span');
+        if(checkbox && !checkbox.checked){
+          let li = document.createElement('li');
+          li.textContent = span ? span.textContent : "[No Text]";
+          ul.appendChild(li);
+        }
+      });
+
+      if(ul.children.length == 0){
+        alert("there is no incompleted tasks.");
+      } else {
+        incomplete.appendChild(ul);
+      }
+    }
+
+    function taskCounter(){
+      let tasks = document.getElementById('tasks');
+      let ul = document.createElement('ul');
+      let counter = document.getElementById('counter');
+      counter.innerHTML = "";
+
+      let completedCount = 0;
+      let incompletedCount = 0;
+      Array.from(tasks.children).forEach((ele)=>{
+        let checkbox = ele.querySelector('input[type="checkbox"]');
+        if(checkbox && checkbox.checked){
+          completedCount += 1;
+        } else {
+          incompletedCount += 1;
+        }
+      });
+
+      let li1 = document.createElement('li');
+      li1.textContent = `Total Tasks : ${tasks.children.length}`;
+      let li2 = document.createElement('li');
+      li2.textContent = `Completed tasks : ${completedCount}`;
+      let li3 = document.createElement('li');
+      li3.textContent = `Incompleted tasks : ${incompletedCount}`;
+
+      ul.appendChild(li1);
+      ul.appendChild(li2);
+      ul.appendChild(li3);
+      counter.appendChild(ul);
+    }
+
+    function sortTasks(){
+      let tasks = document.getElementById('tasks');
+      let sort = document.getElementById('sort');
+      sort.innerHTML = "";
+
+      let taskList = Array.from(tasks.children);
+      taskList.sort((a, b) => {
+        let textA = a.querySelector('span')?.textContent.toLowerCase() || "";
+        let textB = b.querySelector('span')?.textContent.toLowerCase() || "";
+        return textA.localeCompare(textB);
+      });
+
+      let ul = document.createElement('ul');
+      taskList.forEach((ele) => {
+        let clone = ele.cloneNode(true);
+        ul.appendChild(clone);
+      });
+
+      sort.appendChild(ul);
+    }
+  </script>
+</body>
+</html>
