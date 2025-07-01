@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    body {
+       
+        background-color: #c9aaaa;
+        padding: 20px;
+    }
+    #container {
+        background-color: #fff;
+        padding: 20px 30px;
+        border-radius: 10px;
+       
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+   
+    textarea {
+        height: 80px;
+    }
+    button {
+        display: block;
+        width: 100%;
+        background-color: #28a745;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+       
+    }
+    button:hover {
+        background-color: #218838;
+    }
+</style>
+
+</head>
+<body>
+    <div id="container">
+        <div id="1d">
+            <label for="name" placeholder="Enter your name" required>Agent Name: </label>
+            <input type="text" id="name">
+        </div>
+        <div id="2d">
+            <label for="client" placeholder="Enter your client company" required>Client Company: </label>
+            <input type="text" id="client">
+
+        </div>
+        <div id="3d">
+            <label for="dept">Department: 
+                    <select name="" id="dept">
+                        <option value="choose">Choose</option>
+                        <option value="saas">SaaS</option>
+                        <option value="hw">Hardware</option>
+                        <option value="cons">Consulting</option>
+                        <option value="oth">Other</option>
+                    </select>
+            </label>
+        </div>
+        <div id="4d">
+            <label for="score" placeholder="enter score(1-5)" required>Satisfaction Score: </label>
+            <input type="number" id="score">
+        </div>
+        <div id="5d">
+            <label for="nps" placeholder="enter nps score: -100 to +100" >Net Promoter Score: </label>
+         <input type="number" id="nps">
+        </div>
+        <div id="6d">
+            <textarea name="Comment">Comment:</textarea>
+        </div>
+    </div>
+    <button onclick="submit()">Submit</button>   
+</body>
+</html>
+<script>
+    async function submit() {
+      const name = document.getElementById("name").value.trim();
+      const client = document.getElementById("client").value.trim();
+      const department = document.getElementById("dept").value;
+      const score = parseInt(document.getElementById("score").value);
+      const nps = parseInt(document.getElementById("nps").value);
+      const comment = document.getElementById("comment").value.trim();
+      const date = new Date().toISOString();
+
+      
+      const data = {
+        agent: name,
+        client: client,
+        department: department,
+        score: score,
+        nps: nps,
+        comment: comment,
+        date: date,
+      };
+
+      try {
+        const response = await fetch(
+          "https://insightplus-862d5-default-rtdb.asia-southeast1.firebasedatabase.app/.json", 
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        if (response.ok) {
+          alert("Feedback submitted successfully!");
+          
+          document.getElementById("name").value = "";
+          document.getElementById("client").value = "";
+          document.getElementById("dept").value = "choose";
+          document.getElementById("score").value = "";
+          document.getElementById("nps").value = "";
+          document.getElementById("comment").value = "";
+        } else {
+          alert("Submission failed! Please try again.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error submitting feedback.");
+      }
+    }
+</script>
