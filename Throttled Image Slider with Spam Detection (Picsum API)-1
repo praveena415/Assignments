@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Throttled Slider</title>
+  <style>
+    img { width: 600px; height: 400px; display: block; margin-bottom: 10px; }
+    button { margin: 10px; }
+  </style>
+</head>
+<body>
+  <div id="viewer"></div>
+  <button id="btn-back">Back</button>
+  <button id="btn-forward">Forward</button>
+
+  <script>
+    let clickCounter = 0;
+    let recentClick = 0;
+    let slideNum = 1;
+
+    const viewer = document.getElementById("viewer");
+    const forward = document.getElementById("btn-forward");
+    const back = document.getElementById("btn-back");
+
+    function makeImageURL() {
+      return `https://picsum.photos/600/400?random=${Math.random()}`;
+    }
+
+    function renderSlide() {
+      viewer.innerHTML = `
+        <img src="${makeImageURL()}" alt="img">
+        <p>Slide Number: ${slideNum}</p>
+      `;
+    }
+
+    forward.addEventListener("click", () => {
+      const currentTime = Date.now();
+
+      if (currentTime - recentClick < 1000) {
+        clickCounter++;
+        if (clickCounter > 3) {
+          alert("Take it easy, image loading!");
+          clickCounter = 0;
+        }
+        return;
+      }
+
+      recentClick = currentTime;
+      clickCounter = 1;
+
+      slideNum++;
+      renderSlide();
+    });
+
+    back.addEventListener("click", () => {
+      const currentTime = Date.now();
+
+      if (currentTime - recentClick < 1000) {
+        clickCounter++;
+        if (clickCounter > 3) {
+          alert("Take it easy, image loading!");
+          clickCounter = 0;
+        }
+        return;
+      }
+
+      recentClick = currentTime;
+      clickCounter = 1;
+
+      if (slideNum > 1) slideNum--;
+      renderSlide();
+    });
+
+    renderSlide();
+  </script>
+</body>
+</html>
