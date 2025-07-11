@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finder Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 40px auto;
+      max-width: 600px;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      font-size: 18px;
+    }
+    #outputArea {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .marked {
+      background-color: yellow;
+      font-weight: bold;
+    }
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #007BFF;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      display: none;
+      cursor: pointer;
+    }
+    #metrics {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    #loadingText {
+      font-style: italic;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Finder Portal</h1>
+  <input type="text" id="inputField" placeholder="Search a person..." />
+  <div id="loadingText"></div>
+  <div id="outputArea"></div>
+
+  <div id="metrics">
+    <p>Keys Pressed: <span id="keyCounter">0</span></p>
+    <p>Searches Triggered: <span id="searchCounter">0</span></p>
+  </div>
+
+  <button id="scrollTopBtn">Top</button>
+
+  <script>
+    const dataList = [];
+    const givenNames = ["Anna", "Ben", "Catherine", "Derek", "Ella", "Fred", "Gina", "Hank", "Ivy", "Jack"];
+    const surnames = ["Miller", "Garcia", "Lopez", "Wilson", "Moore", "Scott", "Hall", "Turner", "King", "Young"];
+
+    for (let i = 0; i < 200; i++) {
+      const first = givenNames[Math.floor(Math.random() * givenNames.length)];
+      const last = surnames[Math.floor(Math.random() * surnames.length)];
+      dataList.push(`${first} ${last}`);
+    }
+
+    const inputField = document.getElementById("inputField");
+    const outputArea = document.getElementById("outputArea");
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    const keyCounter = document.getElementById("keyCounter");
+    const searchCounter = document.getElementById("searchCounter");
+    const loadingText = document.getElementById("loadingText");
+
+    let keyCount = 0;
+    let searchCount = 0;
+    let debounceHandler;
+
+    function delayExecution(callback, waitTime) {
+      return function (...args) {
+        clearTimeout(debounceHandler);
+        loadingText.innerText = "Searching...";
+        debounceHandler = setTimeout(() => {
+          loadingText.innerText = "";
+          callback(...args);
+        }, waitTime);
+      };
+    }
+
+    function rateLimit(callback, interval) {
+      let throttleLock;
+      return function (...args) {
+        if (!throttleLock) {
+          callback(...args);
+          throttleLock = true;
+          setTimeout(() => throttleLock = false, interval);
+        }
+      };
+    }
+
+    function emphasizeMatch(str, searchTerm) {
+      const regEx = new RegExp(`(${searchTerm})`, "gi");
+      return str.replace(regEx, `<span class="marked">$1</span>`);
+    }
+
+    function executeSearch(inputText) {
+      searchCount++;
+      searchCounter.innerText = searchCount;
+
+      const matched = dataList.filter(fullName =>
+        fullName.toLowerCase().includes(inputText.toLowerCase())
+      );
+
+      if (inputText.trim() === "") {
+        outputArea.innerHTML = "";
+        return;
+      }
+
+      if (matched.length === 0) {
+        outputArea.innerHTML = "<p>No results found.</p>";
+        return;
+      }
+
+      outputArea.innerHTML = matched
+        .map(fullName => `<p>${emphasizeMatch(fullName, inputText)}</p>`)
+        .join("");
+    }
+
+    const optimizedSearch = delayExecution(executeSearch, 1000);
+
+    inputField.addEventListener("input", (e) => {
+      keyCount++;
+      keyCounter.innerText = keyCount;
+      optimizedSearch(e.target.value);
+    });
+
+    window.addEventListener("scroll", rateLimit(() => {
+      if (window.scrollY > 200) {
+        scrollTopBtn.style.display = "block";
+      } else {
+        scrollTopBtn.style.display = "none";
+      }
+    }, 500));
+
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
