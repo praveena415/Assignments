@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Book Tracker</title>
+   <style>
+    body { 
+      font-family: sans-serif; 
+      padding: 20px; max-width: 
+      500px; margin: auto;
+      }
+    #tracker { 
+      display: none; 
+    }
+    .book { 
+      margin: 10px 0;
+    }
+    input { 
+        margin: 5px 0; 
+        width: 100%; 
+        padding: 6px; 
+      }
+    button { 
+      margin-top: 10px; 
+        padding: 6px 12px; 
+      }
+  </style>
+</head>
+<body>
+  <h2>Book Tracker</h2> 
+  <div id="auth">
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+  </div>
+  <div id="tracker">
+    <button onclick="logout()">Logout</button>
+    <h3>Add Book</h3>
+    <input id="title" placeholder="Book Title">
+    <input id="author" placeholder="Author">
+    <button onclick="addBook()">Add Book</button>
+
+    <h3>Your Books</h3>
+    <div id="books"></div>
+  </div>
+
+  <script>
+  
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    let uid = null;
+
+    auth.onAuthStateChanged(user => {
+      uid = user ? user.uid : null;
+      document.getElementById('auth').style.display = user ? 'none' : 'block';
+      document.getElementById('tracker').style.display = user ? 'block' : 'none';
+      if (user) fetchBooks();
+    });
+
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const title = document.getElementById('title');
+    const author = document.getElementById('author');
+
+    function signup() {
+      auth.createUserWithEmailAndPassword(email.value, password.value).catch(alert);
+    }
+
+    function login() {
+      auth.signInWithEmailAndPassword(email.value, password.value).catch(alert);
+    }
+
+    function logout() {
+      auth.signOut();
+    }
+
+    async function addBook() {
+      const book = { userId: uid, title: title.value, body: author.value };
+      await fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        body: JSON.stringify(book),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      title.value = author.value = '';
+      fetchBooks();
+    }
+
+    async function fetchBooks() {
+      const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+      const data = await res.json();
+      const books = data.filter(b => b.userId === uid);
+      const container = document.getElementById('books');
+      container.innerHTML = '';
+      books.forEach(b => {
+        const div = document.createElement('div');
+        div.className = 'book';
+        div.innerHTML = `${b.title} by ${b.body}
+          <button onclick="markAsRead(${b.id})">mark</button>
+          <button onclick="deleteBook(${b.id})">delete</button>`;
+        container.appendChild(div);
+      });
+    }
+
+    async function markAsRead(id) {
+      await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ read: true }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      fetchBooks();
+    }
+
+    async function deleteBook(id) {
+      await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, { method: 'DELETE' });
+      fetchBooks();
+    }
+  </script>
+</body>
+</html>
