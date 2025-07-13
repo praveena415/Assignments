@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyLibrary</title>
+  <style>
+    body { 
+      font-family: sans-serif; 
+      margin: 20px; 
+    }
+    .invisible { 
+        display: none; 
+    }
+    input, button { 
+        padding: 8px; 
+        margin: 5px; 
+    }
+    .entry { 
+        border: 1px solid #ccc; 
+        padding: 10px; 
+        margin: 10px 0; 
+    }
+    .completed { 
+        background: #d1ffd1; 
+    }
+    .pending { 
+        background: #ffd1d1; 
+    }
+  </style>
+</head>
+<body>
+
+  <h1>MyLibrary Tracker</h1>
+
+  <div id="loginArea">
+    <input type="email" id="userEmailInput" placeholder="Email" required />
+    <input type="password" id="userPassInput" placeholder="Password" required />
+    <br/>
+    <button onclick="createAccount()">Create Account</button>
+    <button onclick="accessAccount()">Sign In</button>
+  </div>
+
+  <div id="trackerArea" class="invisible">
+    <h2>Welcome, <span id="currentUserEmail"></span>!</h2>
+    <button onclick="exitAccount()">Sign Out</button>
+    <h3>Add Book Entry</h3>
+    <input type="text" id="bookName" placeholder="Book Name" required />
+    <input type="text" id="bookWriter" placeholder="Author Name" required />
+    <button onclick="saveEntry()">Save Entry</button>
+
+    <h3>Library List</h3>
+    <div id="entryContainer"></div>
+  </div>
+  <script>
+   
+    firebase.initializeApp(config);
+    const fireAuth = firebase.auth();
+
+    const inputEmail = document.getElementById("userEmailInput");
+    const inputPass = document.getElementById("userPassInput");
+    const loginDiv = document.getElementById("loginArea");
+    const trackerDiv = document.getElementById("trackerArea");
+    const showEmail = document.getElementById("currentUserEmail");
+    const entryBox = document.getElementById("entryContainer");
+
+    let signedUser = null;
+    let entryList = [];
+
+    fireAuth.onAuthStateChanged(acc => {
+      if (acc) {
+        signedUser = acc;
+        showEmail.innerText = acc.email;
+        loginDiv.classList.add("invisible");
+        trackerDiv.classList.remove("invisible");
+        getEntries();
+      } else {
+        signedUser = null;
+        loginDiv.classList.remove("invisible");
+        trackerDiv.classList.add("invisible");
+      }
+    });
+
+    function createAccount() {
+      fireAuth.createUserWithEmailAndPassword(inputEmail.value, inputPass.value)
+        .catch(err => alert("Error: " + err.message));
+    }
+
+    function accessAccount() {
+      fireAuth.signInWithEmailAndPassword(inputEmail.value, inputPass.value)
+        .catch(err => alert("Error: " + err.message));
+    }
+
+    function exitAccount() {
+      fireAuth.signOut();
+    }
+
+    function saveEntry() {
+      const name = document.getElementById("bookName").value;
+      const writer = document.getElementById("bookWriter").value;
+
+      if (!name || !writer) return alert("Fill both fields.");
+
+      const entry = {
+        userId: signedUser.uid,
+        title: name,
+        author: writer,
+        read: false
+      };
+
+      fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        body: JSON.stringify(entry),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.json())
+      .then(data => {
+        entryList.push({ ...entry, id: Date.now() });
+        showEntries();
+      });
+    }
+
+    function getEntries() {
+      fetch("https://jsonplaceholder.typicode.com/posts")
+        .then(res => res.json())
+        .then(data => {
+          entryList = data.slice(0, 5).map((item, i) => ({
+            id: i + 1,
+            userId: signedUser.uid,
+            title: item.title,
+            author: "Author " + (i + 1),
+            read: false
+          }));
+          showEntries();
+        });
+    }
+
+    function showEntries() {
+      entryBox.innerHTML = "";
+      entryList.forEach(entry => {
+        const block = document.createElement("div");
+        block.className = `entry ${entry.read ? "completed" : "pending"}`;
+        block.innerHTML = `
+          <b>${entry.title}</b> by ${entry.author}<br />
+          <button onclick="toggleStatus(${entry.id})">${entry.read ? "Mark Pending" : "Mark Read"}</button>
+          <button onclick="removeEntry(${entry.id})">Delete</button>
+        `;
+        entryBox.appendChild(block);
+      });
+    }
+
+    function toggleStatus(entryId) {
+      entryList = entryList.map(entry =>
+        entry.id === entryId ? { ...entry, read: !entry.read } : entry
+      );
+      showEntries();
+    }
+
+    function removeEntry(entryId) {
+      fetch(`https://jsonplaceholder.typicode.com/posts/${entryId}`, {
+        method: "DELETE"
+      }).then(() => {
+        entryList = entryList.filter(entry => entry.id !== entryId);
+        showEntries();
+      });
+    }
+  </script>
+</body>
+</html>
