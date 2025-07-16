@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickCart: A Real-Time Shopping List Manager</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #97ebf1;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      padding: 20px;
+      margin: 0;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 10px;
+      color: #5b17da;
+    }
+    #inputs {
+      background-color: #80eccc;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 8px;
+      font-size: 16px;
+      border: 1px solid;
+      border-radius: 6px;
+      width: 200px;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0e4366;
+    }
+    #total {
+      margin: 20px 0;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .itemCard {
+      background-color: #a5bff0;
+      border: 1px solid;
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin: 10px;
+      width: 360px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+    }
+    .itemInfo {
+      flex: 1;
+      text-align: left;
+      color: black;
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .trash {
+      cursor: pointer;
+      color: #e74c3c;
+      font-size: 18px;
+    }
+    .itemCard button {
+      background-color: #e74c3c;
+      border: none;
+      color: white;
+      padding: 2px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      height: 24px;
+      line-height: 1;
+    }
+    .itemCard button:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <h2>QuickCart</h2> 
+
+  <div id="inputs">
+    <input type="text" id="name" placeholder="Enter the item name">
+    <input type="number" id="quantity" placeholder="Enter the quantity">
+    <input type="number" id="price" placeholder="Enter the price">
+    <select id="category">
+      <option value="">Choose category</option>
+      <option value="Grocery">Grocery</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Tools">Tools</option>
+    </select>
+    <br />
+    <button onclick="addItem()">Add Item</button>
+  </div>
+
+  <div id="total">
+    Total Items : <span id="totItem">0</span> | Total Cost : ₹<span id="totCost">0.00</span>
+  </div>
+
+  <h3>Cart Items</h3>
+  <div id="container"></div>
+
+  <script>
+    const url = 'https://quickcart-f60f6-default-rtdb.asia-southeast1.firebasedatabase.app/items.json';
+
+    async function addItem() {
+      const item = {
+        name: document.getElementById('name').value.trim(),
+        quantity: +document.getElementById('quantity').value,
+        price: +document.getElementById('price').value,
+        category: document.getElementById('category').value
+      };
+
+      if (!item.name || !item.quantity || !item.price || !item.category) {
+        alert("Please Fill All The Fields");
+        return;
+      }
+
+      if (!navigator.onLine) {
+        alert("You're offline. Please connect to internet");
+        return;
+      }
+
+      await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item)
+      });
+
+      document.getElementById('name').value = "";
+      document.getElementById('quantity').value = "";
+      document.getElementById('price').value = "";
+      document.getElementById('category').value = "";
+
+      fetchItems();
+    }
+
+    async function fetchItems() {
+      const res = await fetch(url);
+      const data = await res.json();
+      const container = document.getElementById('container');
+      const totalItemsDisplay = document.getElementById('totItem');
+      const totalCostDisplay = document.getElementById('totCost');
+      container.innerHTML = "";
+
+      if (!data) {
+        totalItemsDisplay.innerText = "0";
+        totalCostDisplay.innerText = "0.00";
+        return;
+      }
+
+      const items = Object.entries(data).map(([id, item]) => ({ id, ...item }));
+
+      const totalQty = items.reduce((sum, item) => sum + item.quantity, 0);
+      const grandTotal = items.reduce((sum, item) => sum + item.quantity * item.price, 0);
+
+      totalItemsDisplay.innerText = totalQty;
+      totalCostDisplay.innerText = grandTotal.toFixed(2);
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'itemCard';
+        card.innerHTML = `
+          <div class="itemInfo">${item.name} × ${item.quantity} — ₹${item.price}</div>
+          <div class="actions">
+            <span class="trash" onclick="deleteItem('${item.id}')">🗑</span>
+            <button onclick="deleteItem('${item.id}')">Delete</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function deleteItem(id) {
+      await fetch(`https://quickcart-f60f6-default-rtdb.asia-southeast1.firebasedatabase.app/items/${id}.json`, {
+        method: 'DELETE'
+      });
+      fetchItems();
+    }
+
+    fetchItems();
+  </script>
+</body>
+</html>
