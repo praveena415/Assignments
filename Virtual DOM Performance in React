@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+	<h1 id="title">Heading</h1>
+	<div id="root">
+		I'm a DOM Heading
+		<h1 id="head">DOM HEADING</h1>
+	</div>
+	<div id="root-1">
+		I'm a DOM Heading
+		<h1 id="head">DOM HEADING</h1>
+	</div>
+	<button id="dombtn">Change the DOM TEXT</button>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel" datatype="module">
+ let count = 0
+	let root1 = document.getElementById("root-1")
+    let h1=document.createElement("h2")
+	root1.appendChild(h1)
+	h1.innerText=`COUNT:${count}`
+	
+document.getElementById("dombtn").addEventListener("click",()=>{
+      count++;
+	  console.log(count)
+	  h1.innerText=`COUNT:${count}`
+	  document.getElementById("title").innerText="This is from Dom"
+	  document.getElementById("head").innerText=`Changing DOM Text ${count}`
+})
+	let root = ReactDOM.createRoot(document.getElementById("root"))
+	const {useState}=React;
+	
+   function Counter(){
+	const [count,setCount] = useState(0);
+	function handleClick(){
+		setCount(count+1)
+		document.getElementById("title").innerText="This is from React"
+	}
+	return(
+		<div>
+			<h1>Changing the React Text {count}</h1>
+			<h1>Count:{count}</h1>
+			<button onClick={handleClick}>Change Text</button></div>
+	)
+
+  root.render()	
+</script>
+</html>
