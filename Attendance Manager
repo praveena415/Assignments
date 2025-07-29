@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance App</title>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+  <div id="attendance-root">
+    this is dom heading
+  </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+  const container = ReactDOM.createRoot(document.getElementById("attendance-root"));
+
+  function StudentAttendanceApp() {
+    const [roster, setRoster] = React.useState([
+      { id: 1, fullName: "Mahesh", status: true },
+      { id: 2, fullName: "Neel", status: true },
+      { id: 3, fullName: "Anjali", status: true },
+      { id: 9, fullName: "Nimmy", status: false },
+      { id: 6, fullName: "Evaro", status: false }
+    ]);
+
+    const [view, setView] = React.useState("");
+
+    function changeView(e) {
+      setView(e.target.value);
+    }
+
+    function toggleStatus(id) {
+      setRoster(
+        roster.map((student) =>
+          student.id === id ? { ...student, status: !student.status } : student
+        )
+      );
+    }
+
+    const filteredRoster = roster.filter((student) => {
+      if (view === "present") return student.status;
+      if (view === "absent") return !student.status;
+      return true;
+    });
+
+    return (
+      <>
+        <div>
+          <h3>Student List</h3>
+          <select name="view" onChange={changeView}>
+            <option value="">All</option>
+            <option value="present">Present</option>
+            <option value="absent">Absent</option>
+          </select>
+
+          {filteredRoster.map((student) => (
+            <div
+              key={student.id}
+              style={{
+                backgroundColor: student.status ? "green" : "red",
+                color: "#fff",
+                padding: "10px",
+                margin: "10px 0"
+              }}
+            >
+              <p><strong>Name:</strong> {student.fullName}</p>
+              <p><strong>Status:</strong> {student.status ? "Present" : "Absent"}</p>
+              <button onClick={() => toggleStatus(student.id)}>
+                Mark as {student.status ? "Absent" : "Present"}
+              </button>
+            </div>
+          ))}
+
+          <p><strong>Total Present:</strong> {roster.filter(s => s.status).length}</p>
+        </div>
+      </>
+    );
+  }
+
+  container.render(<StudentAttendanceApp />);
+</script>
+
+</html>
