@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Todo App</title>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+  <div id="todo-root">
+    this is dom heading
+  </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+  const container = ReactDOM.createRoot(document.getElementById("todo-root"));
+
+  function TaskApp() {
+    const [taskList, setTaskList] = React.useState(["Buy milk", "Study React"]);
+    const [newEntry, setNewEntry] = React.useState("");
+
+    function addTask() {
+      if (newEntry.trim().length === 0) return alert("Enter a valid task");
+      setTaskList([...taskList, newEntry]);
+      setNewEntry("");
+      console.log("Task added successfully");
+    }
+
+    function removeAll() {
+      setTaskList([]);
+    }
+
+    return (
+      <>
+        <input
+          type="text"
+          placeholder="New Task"
+          value={newEntry}
+          name="newEntry"
+          onChange={(e) => setNewEntry(e.target.value)}
+        />
+        <button onClick={addTask}>Add New Task</button>
+        <button onClick={removeAll}>Clear All Tasks</button>
+        <h1>All Tasks</h1>
+        {taskList.length === 0 && <h2>No Tasks Available</h2>}
+        {taskList.length > 0 && (
+          <ol>
+            {taskList.map((task, index) => (
+              <li key={index}>{task}</li>
+            ))}
+          </ol>
+        )}
+      </>
+    );
+  }
+
+  container.render(<TaskApp />);
+</script>
+
+</html>
