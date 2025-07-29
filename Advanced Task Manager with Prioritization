@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advanced Task App</title>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+  <div id="root">
+    this is dom heading
+  </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+
+const { useState } = React;
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+function TaskManagerApp() {
+  const [taskList, setTaskList] = useState([]);
+  const [newTask, setNewTask] = useState({ name: "", level: "low" });
+  const [filters, setFilters] = useState({ level: "all", state: "all", order: "high" });
+
+  let displayTasks = taskList.filter((t) => {
+    if (filters.level !== "all" && t.level !== filters.level) return false;
+    if (filters.state !== "all") {
+      if (filters.state === "completed" && t.done !== true) return false;
+      if (filters.state === "pending" && t.done !== false) return false;
+    }
+    return true;
+  });
+
+  if (filters.order === "high") {
+    displayTasks.sort((a, b) => {
+      const priorityOrder = { high: 3, medium: 2, low: 1 };
+      return priorityOrder[b.level] - priorityOrder[a.level];
+    });
+  } else if (filters.order === "low") {
+    displayTasks.sort((a, b) => {
+      const priorityOrder = { high: 3, medium: 2, low: 1 };
+      return priorityOrder[a.level] - priorityOrder[b.level];
+    });
+  }
+
+  function updateInput(e) {
+    const { name, value } = e.target;
+    setNewTask({ ...newTask, [name]: value, done: false, id: crypto.randomUUID() });
+  }
+
+  function submitTask(e) {
+    e.preventDefault();
+    if (newTask.name.trim() === "") return alert("Please enter a valid task name");
+    setTaskList([...taskList, newTask]);
+    setNewTask({ name: "", level: "low" });
+  }
+
+  function toggleTask(id) {
+    setTaskList(taskList.map((t) => t.id === id ? { ...t, done: !t.done } : t));
+  }
+
+  function removeTask(id) {
+    setTaskList(taskList.filter((t) => t.id !== id));
+  }
+
+  function updateFilter(e) {
+    const { name, value } = e.target;
+    setFilters({ ...filters, [name]: value });
+  }
+
+  return (
+    <>
+      <h1>Welcome to Task Tracker Pro</h1>
+
+      <h2>Create a New Task</h2>
+      <form onSubmit={submitTask}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter task name"
+          value={newTask.name}
+          onChange={updateInput}
+        />
+        <select name="level" value={newTask.level} onChange={updateInput}>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button type="submit">Add Task</button>
+      </form>
+
+      <div>
+        <label>Priority:</label>
+        <select name="level" value={filters.level} onChange={updateFilter}>
+          <option value="all">All</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+
+        <label>Status:</label>
+        <select name="state" value={filters.state} onChange={updateFilter}>
+          <option value="all">All</option>
+          <option value="completed">Completed</option>
+          <option value="pending">Pending</option>
+        </select>
+
+        <label>Sort:</label>
+        <select name="order" value={filters.order} onChange={updateFilter}>
+          <option value="high">High to Low</option>
+          <option value="low">Low to High</option>
+        </select>
+      </div>
+
+      <h3>Task List</h3>
+      <div>
+        {displayTasks.map((t, idx) => (
+          <div key={idx} style={{ borderBottom: "1px solid #ccc", marginBottom: "10px" }}>
+            <h2>Name: {t.name}</h2>
+            <p><strong>Priority:</strong> {t.level.toUpperCase()}</p>
+            <p>
+              <strong>Status:</strong> {t.done ? "Completed" : "Pending"}{" "}
+              <button onClick={() => toggleTask(t.id)}>
+                Mark as {t.done ? "Pending" : "Completed"}
+              </button>
+            </p>
+            <button onClick={() => removeTask(t.id)}>Delete</button>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+root.render(<TaskManagerApp />);
+
+</script>
+</html>
