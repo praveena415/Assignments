@@ -1,0 +1,57 @@
+import React, { useState } from 'react';
+
+function TodoList() {
+  const [tasks, setTasks] = useState([]);
+  const [input, setInput] = useState('');
+
+  const addTask = () => {
+    if (input.trim() === '') return; // Prevent adding empty tasks
+    setTasks([...tasks, { text: input, completed: false }]);
+    setInput('');
+  };
+
+  const toggleComplete = (index) => {
+    const newTasks = [...tasks];
+    newTasks[index].completed = !newTasks[index].completed;
+    setTasks(newTasks);
+  };
+
+  const deleteTask = (index) => {
+    const newTasks = tasks.filter((_, i) => i !== index);
+    setTasks(newTasks);
+  };
+
+  return (
+    <div style={{ padding: '20px', maxWidth: '400px', margin: 'auto' }}>
+      <h2>Todo List</h2>
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Add new task"
+        style={{ width: '70%', padding: '5px' }}
+      />
+      <button onClick={addTask} style={{ marginLeft: '10px' }}>
+        Add Task
+      </button>
+      <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+        {tasks.map((task, i) => (
+          <li key={i} style={{ marginTop: '10px' }}>
+            <span
+              onClick={() => toggleComplete(i)}
+              style={{
+                textDecoration: task.completed ? 'line-through' : 'none',
+                cursor: 'pointer',
+                marginRight: '10px'
+              }}
+            >
+              {task.text}
+            </span>
+            <button onClick={() => deleteTask(i)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default TodoList;
