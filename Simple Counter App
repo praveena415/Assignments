@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Counter App</title>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+  <div id="app-root">
+    this is dom heading
+  </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+  const container = ReactDOM.createRoot(document.getElementById("app-root"));
+
+  function StepCounter() {
+    const [steps, setSteps] = React.useState(0);
+
+    function increase() {
+      setSteps(steps + 1);
+    }
+
+    function decrease() {
+      setSteps(steps - 1);
+    }
+
+    function restart() {
+      setSteps(0);
+    }
+
+    return (
+      <>
+        <div>
+          <h3>Steps: {steps}</h3>
+          <button onClick={increase}>Increase</button>
+          <button disabled={steps === 0} onClick={decrease}>Decrease</button>
+          <button onClick={restart}>Reset</button>
+          {steps === 10 && alert("Goal is Reached!!")}
+        </div>
+      </>
+    );
+  }
+
+  container.render(<StepCounter />);
+</script>
+
+</html>
