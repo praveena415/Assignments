@@ -1,0 +1,17 @@
+body.light {
+  background: rgb(240, 169, 169);
+  color: rgb(0, 0, 0);
+}
+body.dark {
+  background: #ca5858;
+  color: rgb(19, 17, 17);
+}
+.card {
+  border: 1px solid #eb4141;
+  padding: 1rem;
+  margin: 1rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
