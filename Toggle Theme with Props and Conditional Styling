@@ -1,0 +1,47 @@
+
+import { useState } from "react";
+
+const ThemedBox = ({ theme, children }) => {
+  const styles = {
+    light: {
+      backgroundColor: "white",
+      color: "black",
+      padding: "20px",
+      margin: "10px",
+      borderRadius: "10px",
+      boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+    },
+    dark: {
+      backgroundColor: "grey",
+      color: "white",
+      padding: "20px",
+      margin: "10px",
+      borderRadius: "10px",
+      boxShadow: "0 0 10px rgba(255,255,255,0.1)",
+    },
+  };
+
+  return <div style={styles[theme]}>{children}</div>;
+};
+
+const ThemeApp = () => {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+
+  return (
+    <div style={{ textAlign: "center", padding: "30px" }}>
+      <h1>Theme Toggle App</h1>
+      <button onClick={toggleTheme}>
+        Switch to {theme === "light" ? "Dark" : "Light"} Theme
+      </button>
+
+      <ThemedBox theme={theme}>This is Box 1</ThemedBox>
+      <ThemedBox theme={theme}>This is Box 2</ThemedBox>
+      <ThemedBox theme={theme}>This is Box 3</ThemedBox>
+    </div>
+  );
+};
+
+export default ThemeApp;
