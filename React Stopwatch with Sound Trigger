@@ -1,0 +1,49 @@
+import { useEffect, useState, useRef } from "react";
+
+const Stopwatch = () => {
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    let timer;
+
+    if (isRunning) {
+      timer = setInterval(() => {
+        setSeconds((prev) => prev + 1);
+      }, 1000);
+    }
+
+    return () => clearInterval(timer);
+  }, [isRunning]);
+
+  useEffect(() => {
+    if (seconds === 10) {
+      if (audioRef.current) {
+        audioRef.current.play();
+      } else {
+        console.log("🎵 Time's up! 10 seconds reached.");
+      }
+    }
+  }, [seconds]);
+
+  const handleStart = () => setIsRunning(true);
+  const handleStop = () => setIsRunning(false);
+
+  return (
+    <div style={{ textAlign: "center", padding: "30px", fontFamily: "sans-serif" }}>
+      <h1>Stopwatch</h1>
+      <h2>{seconds} seconds</h2>
+      <button onClick={handleStart} style={{ margin: "10px" }}>Start</button>
+      <button onClick={handleStop} style={{ margin: "10px" }}>Stop</button>
+
+      <audio
+        ref={audioRef}
+        src="https://www.soundjay.com/button/beep-07.mp3"
+        preload="auto"
+      />
+    </div>
+  );
+};
+
+export default Stopwatch;
