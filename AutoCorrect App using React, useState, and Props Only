@@ -1,0 +1,43 @@
+import { useState } from "react";
+
+const AutoCorrectApp = () => {
+  const [inputText, setInputText] = useState("");
+
+  const corrections = {
+    teh: "the",
+    recieve: "receive",
+    adress: "address",
+    wierd: "weird",
+    thier: "their"
+  };
+
+  const getCorrectedText = (text) => {
+    return text
+      .split(" ")
+      .map((word) => corrections[word] || word)
+      .join(" ");
+  };
+
+  return (
+    <div style={{ padding: "30px", fontFamily: "sans-serif" }}>
+      <h2>AutoCorrect App</h2>
+
+      <input
+        type="text"
+        value={inputText}
+        placeholder="Type something..."
+        onChange={(e) => setInputText(e.target.value)}
+        style={{ width: "100%", padding: "10px", fontSize: "16px" }}
+      />
+
+      <div style={{ marginTop: "20px" }}>
+        <strong>Corrected Preview:</strong>
+        <p style={{ fontSize: "18px", marginTop: "10px" }}>
+          {getCorrectedText(inputText)}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default AutoCorrectApp;
