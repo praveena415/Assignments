@@ -1,0 +1,92 @@
+import React, { createContext, useContext, useState } from 'react';
+import {
+  ChakraProvider,
+  Box,
+  Flex,
+  Grid,
+  Button,
+  extendTheme,
+} from '@chakra-ui/react';
+
+const AuthContext = createContext();
+const AuthContextProvider = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const toggleAuth = () => setIsLoggedIn((prev) => !prev);
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, toggleAuth }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const ThemeContext = createContext();
+const ThemeContextProvider = ({ children }) => {
+  const [theme, setTheme] = useState('light');
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+const AppContent = () => {
+  const { isLoggedIn, toggleAuth } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  const isLight = theme === 'light';
+  const bgColor = isLight ? 'gray.100' : 'gray.700';
+  const cardBg = isLight ? 'gray.200' : 'gray.600';
+  const footerBg = isLight ? 'gray.300' : 'gray.800';
+  const textColor = isLight ? 'black' : 'white';
+
+  return (
+    <Box minH="100vh" bg={bgColor} color={textColor}>
+   
+      <Flex
+        as="nav"
+        p="4"
+        bg={bgColor}
+        justifyContent="space-between"
+        align="center"
+        boxShadow="md"
+      >
+        <Button onClick={toggleAuth}>
+          {isLoggedIn ? 'Log Out' : 'Log In'}
+        </Button>
+        <Button onClick={toggleTheme}>
+          Switch to {isLight ? 'Dark' : 'Light'} Theme
+        </Button>
+      </Flex>
+
+      <Grid
+        templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+        gap="4"
+        p="4"
+      >
+        {['Card 1', 'Card 2', 'Card 3'].map((card) => (
+          <Box key={card} p="6" shadow="md" bg={cardBg} borderRadius="md">
+            {card}
+          </Box>
+        ))}
+      </Grid>
+
+      <Box as="footer" p="4" bg={footerBg} textAlign="center">
+        {isLoggedIn ? 'Welcome, User' : 'Please log in'}
+      </Box>
+    </Box>
+  );
+};
+
+const App = () => (
+  <ChakraProvider theme={extendTheme({ config: { initialColorMode: 'light' } })}>
+    <AuthContextProvider>
+      <ThemeContextProvider>
+        <AppContent />
+      </ThemeContextProvider>
+    </AuthContextProvider>
+  </ChakraProvider>
+);
+
+export default App;
