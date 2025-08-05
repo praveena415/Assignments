@@ -1,0 +1,106 @@
+import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useParams,
+  useNavigate,
+} from 'react-router-dom';
+
+const Navbar = () => (
+  <nav style={{ padding: '1rem', background: '#eee' }}>
+    <Link to="/">Home</Link>
+  </nav>
+);
+
+const Home = () => {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [sort, setSort] = useState('');
+  const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    fetch('https://dummyjson.com/products')
+      .then(res => res.json())
+      .then(data => setProducts(data.products));
+
+    fetch('https://dummyjson.com/products/categories')
+      .then(res => res.json())
+      .then(data => setCategories(data));
+  }, []);
+
+  const filteredProducts = products
+    .filter(p => (filter ? p.category === filter : true))
+    .sort((a, b) => {
+      if (sort === 'low') return a.price - b.price;
+      if (sort === 'high') return b.price - a.price;
+      return 0;
+    });
+
+  return (
+    <div style={{ padding: '1rem' }}>
+      <h2>Product Store</h2>
+
+      <div style={{ marginBottom: '1rem' }}>
+        <select onChange={(e) => setFilter(e.target.value)} defaultValue="">
+          <option value="">All Categories</option>
+          {categories.map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
+
+        <select onChange={(e) => setSort(e.target.value)} defaultValue="" style={{ marginLeft: '1rem' }}>
+          <option value="">Sort by</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+        </select>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+        {filteredProducts.map(p => (
+          <div key={p.id} style={{ border: '1px solid #ccc', padding: '1rem' }}>
+            <h4>{p.title}</h4>
+            <p>${p.price}</p>
+            <Link to={`/product/${p.id}`}>View</Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ProductDetail = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    fetch(`https://dummyjson.com/products/${id}`)
+      .then(res => res.json())
+      .then(data => setProduct(data));
+  }, [id]);
+
+  if (!product) return <p style={{ padding: '1rem' }}>Loading...</p>;
+
+  return (
+    <div style={{ padding: '1rem' }}>
+      <h2>{product.title}</h2>
+      <p><strong>Price:</strong> ${product.price}</p>
+      <p><strong>Description:</strong> {product.description}</p>
+      <p><strong>Category:</strong> {product.category}</p>
+      <img src={product.thumbnail} alt={product.title} width="200" />
+    </div>
+  );
+};
+
+const App = () => (
+  <Router>
+    <Navbar />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/product/:id" element={<ProductDetail />} />
+    </Routes>
+  </Router>
+);
+
+export default App;
