@@ -1,0 +1,115 @@
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import {
+  ChakraProvider,
+  Box,
+  Button,
+  VStack,
+  Text,
+  HStack,
+  extendTheme,
+} from '@chakra-ui/react';
+
+const NotificationContext = createContext();
+
+const NotificationProvider = ({ children }) => {
+  const [notifications, setNotifications] = useState([]);
+  const intervalRef = useRef(null);
+  const idRef = useRef(1);
+
+  const addNotification = () => {
+    const newNotification = {
+      id: idRef.current++,
+      message: 'You have a new message',
+      read: false,
+    };
+    setNotifications((prev) => [newNotification, ...prev]);
+  };
+
+  const markAllAsRead = () => {
+    setNotifications((prev) =>
+      prev.map((notif) => ({ ...notif, read: true }))
+    );
+  };
+
+  const stopNotifications = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    intervalRef.current = setInterval(addNotification, 5000);
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  return (
+    <NotificationContext.Provider
+      value={{
+        notifications,
+        addNotification,
+        markAllAsRead,
+        stopNotifications,
+      }}
+    >
+      {children}
+    </NotificationContext.Provider>
+  );
+};
+
+const NotificationList = () => {
+  const { notifications } = useContext(NotificationContext);
+
+  return (
+    <VStack align="start" spacing="3" mt="4">
+      {notifications.map((notif) => (
+        <Box
+          key={notif.id}
+          p="3"
+          bg={notif.read ? 'gray.100' : 'blue.100'}
+          w="100%"
+          borderRadius="md"
+        >
+          <Text fontWeight={notif.read ? 'normal' : 'bold'}>
+            {notif.message} (#{notif.id})
+          </Text>
+        </Box>
+      ))}
+    </VStack>
+  );
+};
+
+const Controls = () => {
+  const { markAllAsRead, stopNotifications } = useContext(NotificationContext);
+
+  return (
+    <HStack mt="4">
+      <Button colorScheme="blue" onClick={markAllAsRead}>
+        Mark All as Read
+      </Button>
+      <Button colorScheme="red" onClick={stopNotifications}>
+        Stop Notifications
+      </Button>
+    </HStack>
+  );
+};
+
+const Dashboard = () => (
+  <Box maxW="lg" mx="auto" p="6">
+    <Text fontSize="2xl" fontWeight="bold" mb="4">
+      Notification Center
+    </Text>
+    <Controls />
+    <NotificationList />
+  </Box>
+);
+
+const App = () => (
+  <ChakraProvider theme={extendTheme({ config: { initialColorMode: 'light' } })}>
+    <NotificationProvider>
+      <Dashboard />
+    </NotificationProvider>
+  </ChakraProvider>
+);
+
+export default App;
