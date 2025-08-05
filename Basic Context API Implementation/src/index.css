@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.app-container {
+  padding: 2rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.app-container.dark {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.nested-box {
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.nested-box.light {
+  background-color: #f0f0f0;
+}
+
+.nested-box.dark {
+  background-color: #333333;
+}
