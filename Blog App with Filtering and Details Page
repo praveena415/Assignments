@@ -1,0 +1,93 @@
+import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useParams,
+} from 'react-router-dom';
+
+const Navbar = () => (
+  <nav style={{ padding: '1rem', background: '#eee' }}>
+    <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
+    <Link to="/about">About</Link>
+  </nav>
+);
+
+const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    fetch('https://dummyjson.com/posts')
+      .then((res) => res.json())
+      .then((data) => setPosts(data.posts));
+  }, []);
+
+  const filteredPosts = posts.filter((post) =>
+    post.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div style={{ padding: '1rem' }}>
+      <h2>Blog Posts</h2>
+      <input
+        type="text"
+        placeholder="Search by title..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{ marginBottom: '1rem', padding: '0.5rem' }}
+      />
+      <ul>
+        {filteredPosts.map((post) => (
+          <li key={post.id}>
+            <Link to={`/post/${post.id}`}>{post.title}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const PostDetail = () => {
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
+
+  useEffect(() => {
+    fetch(`https://dummyjson.com/posts/${id}`)
+      .then((res) => res.json())
+      .then((data) => setPost(data));
+  }, [id]);
+
+  if (!post) return <p style={{ padding: '1rem' }}>Loading...</p>;
+
+  return (
+    <div style={{ padding: '1rem' }}>
+      <h2>{post.title}</h2>
+      <p>{post.body}</p>
+      <p>
+        <strong>Tags:</strong> {post.tags.join(', ')}
+      </p>
+    </div>
+  );
+};
+
+const About = () => (
+  <div style={{ padding: '1rem' }}>
+    <h2>About This Blog</h2>
+    <p>This is a simple blog app built with React and React Router.</p>
+  </div>
+);
+
+const App = () => (
+  <Router>
+    <Navbar />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/post/:id" element={<PostDetail />} />
+      <Route path="/about" element={<About />} />
+    </Routes>
+  </Router>
+);
+
+export default App;
