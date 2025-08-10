@@ -1,0 +1,258 @@
+import React, { useReducer, useState } from "react";
+
+const initialState = {
+  name: "",
+  establishment_year: "",
+  address: {
+    building: "",
+    street: "",
+    city: {
+      name: "",
+      locality: {
+        pinCode: "",
+        landmark: "",
+      },
+    },
+    state: "",
+    coordinates: {
+      latitude: "",
+      longitude: "",
+    },
+  },
+  courses_offered: [],
+};
+
+function formReducer(state, action) {
+  switch (action.type) {
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.payload };
+
+    case "SET_ADDRESS_FIELD":
+      return {
+        ...state,
+        address: { ...state.address, [action.field]: action.payload },
+      };
+
+    case "SET_CITY_FIELD":
+      return {
+        ...state,
+        address: {
+          ...state.address,
+          city: { ...state.address.city, [action.field]: action.payload },
+        },
+      };
+
+    case "SET_LOCALITY_FIELD":
+      return {
+        ...state,
+        address: {
+          ...state.address,
+          city: {
+            ...state.address.city,
+            locality: {
+              ...state.address.city.locality,
+              [action.field]: action.payload,
+            },
+          },
+        },
+      };
+
+    case "SET_COORDINATES_FIELD":
+      return {
+        ...state,
+        address: {
+          ...state.address,
+          coordinates: {
+            ...state.address.coordinates,
+            [action.field]: action.payload,
+          },
+        },
+      };
+
+    case "SET_COURSES":
+      return {
+        ...state,
+        courses_offered: action.payload.split(",").map((c) => c.trim()),
+      };
+
+    case "reset":
+      return initialState;
+
+    default:
+      throw new Error("invalid action type");
+  }
+}
+
+function CollegeForm() {
+  const [state, dispatch] = useReducer(formReducer, initialState);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleReset = () => {
+    dispatch({ type: "reset" });
+    setSubmitted(false);
+    setError("");
+  };
+
+  return (
+    <div style={{ padding: "20px", fontFamily: "Arial" }}>
+      <h2>College Form (useReducer)</h2>
+      {error && <div style={{ color: "red" }}>{error}</div>}
+
+      <form onSubmit={handleSubmit}>
+       
+        <input
+          placeholder="College Name"
+          value={state.name}
+          onChange={(e) =>
+            dispatch({ type: "SET_FIELD", field: "name", payload: e.target.value })
+          }
+        />
+        <br />
+        <input
+          placeholder="Establishment Year"
+          value={state.establishment_year}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_FIELD",
+              field: "establishment_year",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+
+        <input
+          placeholder="Building"
+          value={state.address.building}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_ADDRESS_FIELD",
+              field: "building",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+        <input
+          placeholder="Street"
+          value={state.address.street}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_ADDRESS_FIELD",
+              field: "street",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+        <input
+          placeholder="City Name"
+          value={state.address.city.name}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_CITY_FIELD",
+              field: "name",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+        <input
+          placeholder="Pincode"
+          value={state.address.city.locality.pinCode}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_LOCALITY_FIELD",
+              field: "pinCode",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+        <input
+          placeholder="Landmark"
+          value={state.address.city.locality.landmark}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_LOCALITY_FIELD",
+              field: "landmark",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+        <input
+          placeholder="State"
+          value={state.address.state}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_ADDRESS_FIELD",
+              field: "state",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+        <input
+          placeholder="Latitude"
+          value={state.address.coordinates.latitude}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_COORDINATES_FIELD",
+              field: "latitude",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+        <input
+          placeholder="Longitude"
+          value={state.address.coordinates.longitude}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_COORDINATES_FIELD",
+              field: "longitude",
+              payload: e.target.value,
+            })
+          }
+        />
+        <br />
+
+        <input
+          placeholder="Courses Offered (comma separated)"
+          value={state.courses_offered.join(", ")}
+          onChange={(e) =>
+            dispatch({ type: "SET_COURSES", payload: e.target.value })
+          }
+        />
+        <br />
+
+        <button type="submit">Submit</button>
+        <button type="button" onClick={handleReset}>
+          Reset
+        </button>
+      </form>
+
+      {/* Display Submitted Data */}
+      {submitted && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Submitted College Data:</h3>
+          <pre>{JSON.stringify(state, null, 2)}</pre>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default CollegeForm;
