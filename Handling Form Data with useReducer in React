@@ -1,0 +1,111 @@
+import React, { useReducer, useState } from "react";
+
+const initialState = {
+  email: "",
+  password: "",
+};
+function formReducer(state, action) {
+  switch (action.type) {
+    case "email":
+      return { ...state, email: action.payload };
+    case "password":
+      return { ...state, password: action.payload };
+    case "reset":
+      return initialState;
+    default:
+      throw new Error("invalid action type");
+  }
+}
+
+function App() {
+  const [state, dispatch] = useReducer(formReducer, initialState);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (state.email || state.password) {
+      setSubmitted(true);
+    } else {
+      setSubmitted(false);
+    }
+  };
+
+  const handleReset = () => {
+    dispatch({ type: "reset" });
+    setSubmitted(false);
+  };
+
+  return (
+    <div style={{ padding: "20px", fontFamily: "Arial" }}>
+      <h2>useReducer Form Example</h2>
+
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: "10px" }}>
+          <input
+            type="email"
+            placeholder="Enter email"
+            value={state.email}
+            onChange={(e) =>
+              dispatch({ type: "email", payload: e.target.value })
+            }
+            style={{ padding: "8px", width: "250px" }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={state.password}
+            onChange={(e) =>
+              dispatch({ type: "password", payload: e.target.value })
+            }
+            style={{ padding: "8px", width: "250px" }}
+          />
+        </div>
+
+        <button
+          type="submit"
+          style={{
+            padding: "8px 12px",
+            background: "#4cafef",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            marginRight: "8px",
+            cursor: "pointer",
+          }}
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={handleReset}
+          style={{
+            padding: "8px 12px",
+            background: "#f44336",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Reset
+        </button>
+      </form>
+
+      <div style={{ marginTop: "20px" }}>
+        {!submitted ? (
+          <div>No details found</div>
+        ) : (
+          <div>
+            <div>User Email: {state.email}</div>
+            <div>User Password: {state.password}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
