@@ -1,0 +1,86 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { ChakraProvider, Box, Flex, HStack, VStack, Button, Text, Heading, Image, Stack } from "@chakra-ui/react";
+
+function Navbar() {
+  return (
+    <Flex
+      bg="teal.500"
+      color="white"
+      px={6}
+      py={4}
+      justify="space-between"
+      align="center"
+      flexDirection={{ base: "column", md: "row" }}
+      gap={{ base: 2, md: 0 }}
+    >
+      <Heading size="md">MyApp</Heading>
+      <HStack spacing={4} flexDirection={{ base: "column", md: "row" }}>
+        <Button colorScheme="teal" variant="ghost">Home</Button>
+        <Button colorScheme="teal" variant="ghost">About</Button>
+        <Button colorScheme="teal" variant="ghost">Contact</Button>
+      </HStack>
+    </Flex>
+  );
+}
+
+function Card({ title, text, img }) {
+  return (
+    <Box
+      maxW="sm"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      boxShadow="lg"
+      bg="white"
+      p={4}
+      _hover={{ transform: "scale(1.03)", boxShadow: "2xl" }}
+      transition="all 0.3s ease"
+    >
+      <Image src={img} alt={title} borderRadius="md" mx="auto" />
+      <Stack spacing={3} mt={4} textAlign="center">
+        <Heading size="md" color="teal.500">{title}</Heading>
+        <Text fontSize="sm" color="gray.600">{text}</Text>
+        <Button colorScheme="teal">Learn More</Button>
+      </Stack>
+    </Box>
+  );
+}
+
+function App() {
+  return (
+    <Box bgGradient="linear(to-r, teal.50, blue.50)" minH="100vh">
+      <Navbar />
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        wrap="wrap"
+        justify="center"
+        align="center"
+        gap={6}
+        p={6}
+      >
+        <Card
+          title="Card One"
+          text="This is a responsive card built with Chakra UI."
+          img="https://via.placeholder.com/300"
+        />
+        <Card
+          title="Card Two"
+          text="It adapts to different screen sizes automatically."
+          img="https://via.placeholder.com/300"
+        />
+        <Card
+          title="Card Three"
+          text="Resize your browser to see the effect."
+          img="https://via.placeholder.com/300"
+        />
+      </Flex>
+    </Box>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <ChakraProvider>
+    <App />
+  </ChakraProvider>
+);
