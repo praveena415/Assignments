@@ -1,0 +1,42 @@
+import React from "react";
+import ReactDOM from "react-dom";
+import { createStore } from "redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
+
+const INCREMENT = "INCREMENT";
+const DECREMENT = "DECREMENT";
+
+const increment = () => ({ type: INCREMENT });
+const decrement = () => ({ type: DECREMENT });
+
+const initialState = { count: 0 };
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case INCREMENT: return { ...state, count: state.count + 1 };
+    case DECREMENT: return { ...state, count: state.count - 1 };
+    default: return state;
+  }
+};
+
+const store = createStore(reducer);
+
+const CounterApp = () => {
+  const dispatch = useDispatch();
+  const state = useSelector(state => state);
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>Counter: {state.count}</h1>
+      <button onClick={() => dispatch(increment())}>+</button>
+      <button onClick={() => dispatch(decrement())}>-</button>
+      <h3>State: {JSON.stringify(state)}</h3>
+    </div>
+  );
+};
+
+ReactDOM.render(
+  <Provider store={store}>
+    <CounterApp />
+  </Provider>,
+  document.getElementById("root")
+);
