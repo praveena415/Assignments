@@ -1,0 +1,86 @@
+import React, { useEffect, useState } from "react";
+import { ChakraProvider, Box, Input, Button, Text, Flex, Spinner, Checkbox } from "@chakra-ui/react";
+import { createStore, applyMiddleware, combineReducers } from "redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import thunk from "redux-thunk";
+
+const initialState = { isLoading: false, isError: false, footballMatches: [], favorites: [] };
+
+const matchesReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "FETCH_START": return { ...state, isLoading: true, isError: false };
+    case "FETCH_SUCCESS": return { ...state, isLoading: false, footballMatches: action.payload };
+    case "FETCH_ERROR": return { ...state, isLoading: false, isError: true };
+    case "TOGGLE_FAVORITE":
+      return state.favorites.includes(action.payload)
+        ? { ...state, favorites: state.favorites.filter(f => f !== action.payload) }
+        : { ...state, favorites: [...state.favorites, action.payload] };
+    default: return state;
+  }
+};
+
+const rootReducer = combineReducers({ matches: matchesReducer });
+const store = createStore(rootReducer, applyMiddleware(thunk));
+
+const fetchMatches = () => async dispatch => {
+  dispatch({ type: "FETCH_START" });
+  try {
+    const res = await fetch("https://jsonmock.hackerrank.com/api/football_matches?page=2");
+    const data = await res.json();
+    dispatch({ type: "FETCH_SUCCESS", payload: data.data });
+  } catch {
+    dispatch({ type: "FETCH_ERROR" });
+  }
+};
+
+const AppContent = () => {
+  const dispatch = useDispatch();
+  const { isLoading, isError, footballMatches, favorites } = useSelector(s => s.matches);
+  const [search, setSearch] = useState("");
+  const [filterTeam, setFilterTeam] = useState("");
+
+  useEffect(() => { dispatch(fetchMatches()); }, [dispatch]);
+
+  const filtered = footballMatches.filter(m =>
+    m.team1.toLowerCase().includes(search.toLowerCase()) ||
+    m.team2.toLowerCase().includes(search.toLowerCase())
+  ).filter(m => filterTeam ? (m.team1 === filterTeam || m.team2 === filterTeam) : true);
+
+  return (
+    <Box p={4}>
+      <Flex gap={2} mb={4}>
+        <Input placeholder="Search matches" value={search} onChange={e => setSearch(e.target.value)} />
+        <Input placeholder="Filter by team" value={filterTeam} onChange={e => setFilterTeam(e.target.value)} />
+      </Flex>
+      {isLoading && <Spinner />}
+      {isError && <Text color="red.500">Error loading matches</Text>}
+      {filtered.map((m, i) => (
+        <Box key={i} borderWidth="1px" p={3} mb={2} borderRadius="md">
+          <Text fontWeight="bold">{m.team1} vs {m.team2}</Text>
+          <Text>Date: {m.date}</Text>
+          <Text>Venue: {m.venue || "N/A"}</Text>
+          <Checkbox isChecked={favorites.includes(i)} onChange={() => dispatch({ type: "TOGGLE_FAVORITE", payload: i })}>
+            Favorite
+          </Checkbox>
+        </Box>
+      ))}
+      <Box mt={6}>
+        <Text fontSize="xl" fontWeight="bold">Favorites</Text>
+        {favorites.map(fav => {
+          const match = footballMatches[fav];
+          return match ? <Text key={fav}>{match.team1} vs {match.team2}</Text> : null;
+        })}
+      </Box>
+    </Box>
+  );
+};
+
+export default function App() {
+  return (
+    <ChakraProvider>
+      <Provider store={store}>
+        <AppContent />
+      </Provider>
+    </ChakraProvider>
+  );
+}
