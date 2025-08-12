@@ -1,0 +1,67 @@
+import React, { useState } from "react";
+import { ChakraProvider, Box, Input, Button, VStack, HStack, Text, Checkbox } from "@chakra-ui/react";
+import { createStore } from "redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+
+const ADD_TODO = "ADD_TODO";
+const TOGGLE_TODO = "TOGGLE_TODO";
+const DELETE_TODO = "DELETE_TODO";
+
+const addTodo = (title) => ({ type: ADD_TODO, payload: { id: uuidv4(), title, status: false } });
+const toggleTodo = (id) => ({ type: TOGGLE_TODO, payload: id });
+const deleteTodo = (id) => ({ type: DELETE_TODO, payload: id });
+
+const initialState = { todos: [] };
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_TODO:
+      return { ...state, todos: [...state.todos, action.payload] };
+    case TOGGLE_TODO:
+      return { ...state, todos: state.todos.map(todo => todo.id === action.payload ? { ...todo, status: !todo.status } : todo) };
+    case DELETE_TODO:
+      return { ...state, todos: state.todos.filter(todo => todo.id !== action.payload) };
+    default:
+      return state;
+  }
+};
+
+const store = createStore(reducer);
+
+const TodoApp = () => {
+  const [input, setInput] = useState("");
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
+  return (
+    <ChakraProvider>
+      <Box p={4} maxW="md" mx="auto">
+        <HStack>
+          <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Add todo" />
+          <Button onClick={() => { if (input.trim()) { dispatch(addTodo(input)); setInput(""); } }} colorScheme="blue">Add</Button>
+        </HStack>
+        <VStack mt={4} spacing={3} align="stretch">
+          {todos.map(todo => (
+            <HStack key={todo.id} justify="space-between">
+              <Checkbox isChecked={todo.status} onChange={() => dispatch(toggleTodo(todo.id))}>
+                <Text as={todo.status ? "s" : ""}>{todo.title}</Text>
+              </Checkbox>
+              <Button size="sm" colorScheme="red" onClick={() => dispatch(deleteTodo(todo.id))}>Delete</Button>
+            </HStack>
+          ))}
+        </VStack>
+        <Box mt={4} bg="gray.100" p={2} borderRadius="md">
+          <Text fontSize="sm">{JSON.stringify(todos)}</Text>
+        </Box>
+      </Box>
+    </ChakraProvider>
+  );
+};
+
+export default function App() {
+  return (
+    <Provider store={store}>
+      <TodoApp />
+    </Provider>
+  );
+}
