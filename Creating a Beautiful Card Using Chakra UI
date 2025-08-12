@@ -1,0 +1,42 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { ChakraProvider, Box, Image, Text, Heading, Stack, Flex } from "@chakra-ui/react";
+
+function CardComponent() {
+  return (
+    <Box
+      maxW="sm"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      boxShadow="lg"
+      bg="white"
+      _hover={{ boxShadow: "2xl", transform: "scale(1.03)" }}
+      transition="all 0.3s ease"
+      p={4}
+      m="auto"
+    >
+      <Image src="https://via.placeholder.com/300" alt="Card Image" borderRadius="md" mx="auto" />
+      <Stack spacing={3} mt={4} textAlign="center">
+        <Heading size="md" color="teal.500">Chakra UI Card</Heading>
+        <Text fontSize="sm" color="gray.600">
+          This is a responsive card component created with Chakra UI. It has rounded corners, shadow, and adapts to different screen sizes.
+        </Text>
+      </Stack>
+    </Box>
+  );
+}
+
+function App() {
+  return (
+    <Flex minH="100vh" align="center" justify="center" bgGradient="linear(to-r, teal.100, blue.100)" p={4}>
+      <CardComponent />
+    </Flex>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <ChakraProvider>
+    <App />
+  </ChakraProvider>
+);
