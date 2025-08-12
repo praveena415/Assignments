@@ -1,0 +1,136 @@
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
+import { ChakraProvider, Box, Button, Input, Stack, Text, Spinner } from "@chakra-ui/react";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import thunk from "redux-thunk";
+
+const LOGIN_REQUEST = "LOGIN_REQUEST", LOGIN_SUCCESS = "LOGIN_SUCCESS", LOGIN_FAILURE = "LOGIN_FAILURE", LOGOUT = "LOGOUT";
+const login = (email, password) => async (dispatch) => {
+  dispatch({ type: LOGIN_REQUEST });
+  try {
+    const res = await fetch("https://reqres.in/api/login", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+    if (!res.ok) throw new Error("Login failed");
+    const data = await res.json();
+    dispatch({ type: LOGIN_SUCCESS, payload: data.token });
+  } catch (err) {
+    dispatch({ type: LOGIN_FAILURE, payload: err.message });
+  }
+};
+const authInitial = { token: "", loading: false, error: "", isAuthenticated: false };
+const authReducer = (state = authInitial, action) => {
+  switch (action.type) {
+    case LOGIN_REQUEST: return { ...state, loading: true, error: "" };
+    case LOGIN_SUCCESS: return { ...state, loading: false, token: action.payload, isAuthenticated: true };
+    case LOGIN_FAILURE: return { ...state, loading: false, error: action.payload };
+    case LOGOUT: return authInitial;
+    default: return state;
+  }
+};
+
+const FETCH_QUIZ_REQUEST = "FETCH_QUIZ_REQUEST", FETCH_QUIZ_SUCCESS = "FETCH_QUIZ_SUCCESS", FETCH_QUIZ_FAILURE = "FETCH_QUIZ_FAILURE", INCREMENT_SCORE = "INCREMENT_SCORE", NEXT_QUESTION = "NEXT_QUESTION";
+const fetchQuiz = () => async (dispatch) => {
+  dispatch({ type: FETCH_QUIZ_REQUEST });
+  try {
+    const res = await fetch("https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-quiz");
+    const data = await res.json();
+    dispatch({ type: FETCH_QUIZ_SUCCESS, payload: data.data });
+  } catch (err) {
+    dispatch({ type: FETCH_QUIZ_FAILURE, payload: err.message });
+  }
+};
+const incrementScore = () => ({ type: INCREMENT_SCORE });
+const nextQuestion = () => ({ type: NEXT_QUESTION });
+const quizInitial = { loading: false, questions: [], currentQuestionIndex: 0, score: 0, error: "" };
+const quizReducer = (state = quizInitial, action) => {
+  switch (action.type) {
+    case FETCH_QUIZ_REQUEST: return { ...state, loading: true, error: "" };
+    case FETCH_QUIZ_SUCCESS: return { ...state, loading: false, questions: action.payload };
+    case FETCH_QUIZ_FAILURE: return { ...state, loading: false, error: action.payload };
+    case INCREMENT_SCORE: return { ...state, score: state.score + 1 };
+    case NEXT_QUESTION: return { ...state, currentQuestionIndex: state.currentQuestionIndex + 1 };
+    default: return state;
+  }
+};
+
+const store = createStore(combineReducers({ auth: authReducer, quiz: quizReducer }), applyMiddleware(thunk));
+
+const PrivateRoute = ({ children }) => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  return isAuthenticated ? children : <Navigate to="/" />;
+};
+
+const Login = () => {
+  const [email, setEmail] = useState("eve.holt@reqres.in");
+  const [password, setPassword] = useState("cityslicka");
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogin = () => dispatch(login(email, password));
+  if (isAuthenticated) navigate("/quiz");
+  return (
+    <Box maxW="sm" m="auto" mt={20} p={6} boxShadow="md" borderRadius="md">
+      <Stack spacing={4}>
+        <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Button onClick={handleLogin} isLoading={loading} colorScheme="teal">Login</Button>
+        {error && <Text color="red.500">{error}</Text>}
+      </Stack>
+    </Box>
+  );
+};
+
+const Quiz = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, questions, currentQuestionIndex } = useSelector((state) => state.quiz);
+  useEffect(() => { dispatch(fetchQuiz()); }, [dispatch]);
+  if (loading) return <Spinner size="xl" m="auto" />;
+  if (currentQuestionIndex >= questions.length) { navigate("/result"); return null; }
+  const q = questions[currentQuestionIndex];
+  const handleAnswer = (isCorrect) => { if (isCorrect) dispatch(incrementScore()); dispatch(nextQuestion()); };
+  return (
+    <Box maxW="md" m="auto" mt={20} p={6} boxShadow="md" borderRadius="md">
+      <Text fontSize="lg" mb={4}>{q.question}</Text>
+      <Stack spacing={3}>
+        {q.options.map((opt, i) => (
+          <Button key={i} onClick={() => handleAnswer(opt === q.correct_answer)}>{opt}</Button>
+        ))}
+        <Button variant="outline" onClick={() => dispatch(nextQuestion())}>Skip</Button>
+      </Stack>
+    </Box>
+  );
+};
+
+const Result = () => {
+  const { score, questions } = useSelector((state) => state.quiz);
+  const navigate = useNavigate();
+  return (
+    <Box textAlign="center" mt={20}>
+      <Text fontSize="2xl">Your Score: {score} / {questions.length}</Text>
+      <Button mt={4} colorScheme="teal" onClick={() => navigate("/")}>Home</Button>
+    </Box>
+  );
+};
+
+const App = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/quiz" element={<PrivateRoute><Quiz /></PrivateRoute>} />
+      <Route path="/result" element={<PrivateRoute><Result /></PrivateRoute>} />
+    </Routes>
+  </BrowserRouter>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
+  </Provider>
+);
