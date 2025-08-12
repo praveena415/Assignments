@@ -1,0 +1,118 @@
+import React, { useState } from "react";
+import { createRoot } from "react-dom/client";
+import { ChakraProvider, Box, Input, Button, Select, Stack, Checkbox, Text, Heading, Flex } from "@chakra-ui/react";
+import { createStore, combineReducers } from "redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
+
+const ADD_BOOK = "ADD_BOOK";
+const DELETE_BOOK = "DELETE_BOOK";
+const EDIT_BOOK = "EDIT_BOOK";
+const TOGGLE_READ = "TOGGLE_READ";
+const SET_FILTER = "SET_FILTER";
+
+const addBook = (book) => ({ type: ADD_BOOK, payload: book });
+const deleteBook = (id) => ({ type: DELETE_BOOK, payload: id });
+const editBook = (book) => ({ type: EDIT_BOOK, payload: book });
+const toggleRead = (id) => ({ type: TOGGLE_READ, payload: id });
+const setFilter = (filter) => ({ type: SET_FILTER, payload: filter });
+
+const booksReducer = (state = [], action) => {
+  switch (action.type) {
+    case ADD_BOOK:
+      return [...state, action.payload];
+    case DELETE_BOOK:
+      return state.filter((b) => b.id !== action.payload);
+    case EDIT_BOOK:
+      return state.map((b) => (b.id === action.payload.id ? action.payload : b));
+    case TOGGLE_READ:
+      return state.map((b) => (b.id === action.payload ? { ...b, read: !b.read } : b));
+    default:
+      return state;
+  }
+};
+
+const filtersReducer = (state = { author: "", genre: "", read: "" }, action) => {
+  switch (action.type) {
+    case SET_FILTER:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};
+
+const store = createStore(combineReducers({ books: booksReducer, filters: filtersReducer }));
+
+const App = () => {
+  const dispatch = useDispatch();
+  const { books, filters } = useSelector((state) => state);
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [genre, setGenre] = useState("");
+
+  const filteredBooks = books.filter((b) => {
+    return (
+      (filters.author ? b.author.includes(filters.author) : true) &&
+      (filters.genre ? b.genre.includes(filters.genre) : true) &&
+      (filters.read ? (filters.read === "read" ? b.read : !b.read) : true)
+    );
+  });
+
+  const addNewBook = () => {
+    if (title && author && genre) {
+      dispatch(addBook({ id: Date.now(), title, author, genre, read: false }));
+      setTitle("");
+      setAuthor("");
+      setGenre("");
+    }
+  };
+
+  return (
+    <ChakraProvider>
+      <Box p={4} maxW="600px" mx="auto">
+        <Heading mb={4}>📚 Book Library</Heading>
+        <Stack direction="row" mb={4}>
+          <Input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Input placeholder="Author" value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <Input placeholder="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} />
+          <Button colorScheme="blue" onClick={addNewBook}>Add</Button>
+        </Stack>
+
+        <Stack direction="row" mb={4}>
+          <Input placeholder="Filter by Author" onChange={(e) => dispatch(setFilter({ author: e.target.value }))} />
+          <Input placeholder="Filter by Genre" onChange={(e) => dispatch(setFilter({ genre: e.target.value }))} />
+          <Select placeholder="Reading Status" onChange={(e) => dispatch(setFilter({ read: e.target.value }))}>
+            <option value="read">Read</option>
+            <option value="unread">Unread</option>
+          </Select>
+        </Stack>
+
+        {filteredBooks.map((book) => (
+          <Flex key={book.id} justify="space-between" align="center" borderWidth="1px" p={2} mb={2}>
+            <Box>
+              <Text fontWeight="bold">{book.title}</Text>
+              <Text>{book.author} | {book.genre}</Text>
+              <Checkbox isChecked={book.read} onChange={() => dispatch(toggleRead(book.id))}>Read</Checkbox>
+            </Box>
+            <Stack direction="row">
+              <Button size="sm" onClick={() => {
+                const newTitle = prompt("Edit title", book.title);
+                const newAuthor = prompt("Edit author", book.author);
+                const newGenre = prompt("Edit genre", book.genre);
+                if (newTitle && newAuthor && newGenre) {
+                  dispatch(editBook({ ...book, title: newTitle, author: newAuthor, genre: newGenre }));
+                }
+              }}>Edit</Button>
+              <Button size="sm" colorScheme="red" onClick={() => dispatch(deleteBook(book.id))}>Delete</Button>
+            </Stack>
+          </Flex>
+        ))}
+      </Box>
+    </ChakraProvider>
+  );
+};
+
+createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
