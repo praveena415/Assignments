@@ -1,0 +1,81 @@
+
+import { useState, useEffect, useCallback, useMemo } from "react";
+
+const Post = React.memo(function Post({ id, title, body, verifyPost, onToggleVerify }) {
+  
+  const bgColor = useMemo(
+    () => `hsl(${Math.random() * 360}, 70%, 80%)`,
+    []
+  );
+
+  console.log(`Rendering Post ID: ${id}`);
+
+  return (
+    <div style={{ backgroundColor: bgColor, padding: "12px", margin: "10px 0", borderRadius: "8px" }}>
+      <h3>{title}</h3>
+      <p>{body}</p>
+      <small>ID: {id}</small>
+      <br />
+      <button onClick={() => onToggleVerify(id)}>
+        {verifyPost ? "Verified ✅" : "Verify"}
+      </button>
+    </div>
+  );
+});
+
+export default function App() {
+  const [timer, setTimer] = useState(0);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => setTimer((t) => t + 1), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const addPost = useCallback(() => {
+    if (!title || !body) return;
+    const newPost = {
+      id: Date.now(),
+      title,
+      body,
+      verifyPost: false,
+    };
+    setPosts((prev) => [...prev, newPost]);
+    setTitle("");
+    setBody("");
+  }, [title, body]);
+
+  const toggleVerify = useCallback((id) => {
+    setPosts((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, verifyPost: !p.verifyPost } : p
+      )
+    );
+  }, []);
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h2>⏱ Timer: {timer}</h2>
+
+      <input
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <input
+        placeholder="Body"
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+      />
+      <button onClick={addPost}>Add Post</button>
+
+      <div>
+        {posts.map((post) => (
+          <Post key={post.id} {...post} onToggleVerify={toggleVerify} />
+        ))}
+      </div>
+    </div>
+  );
+}
