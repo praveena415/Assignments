@@ -1,0 +1,72 @@
+
+import { useState, useEffect, useRef } from "react";
+
+function useTimer() {
+  const [timer, setTimer] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const intervalRef 
+  const startTimer = () => {
+    if (!isRunning) {
+      setIsRunning(true);
+      intervalRef.current = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+    }
+  };
+
+  const stopTimer = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+      setIsRunning(false);
+    }
+  };
+
+  const resetTimer = () => {
+    stopTimer();
+    setTimer(0);
+  };
+
+  useEffect(() => {
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  return { timer, isRunning, startTimer, stopTimer, resetTimer };
+}
+export default function App() {
+  const { timer, isRunning, startTimer, stopTimer, resetTimer } = useTimer();
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <div className="bg-white p-6 rounded-lg shadow w-80 text-center">
+        <h1 className="text-2xl font-bold mb-4">⏱ Custom Hook Timer</h1>
+
+        <p className="text-3xl font-mono mb-4">{timer} s</p>
+
+        <div className="flex justify-center gap-3">
+          {!isRunning ? (
+            <button
+              onClick={startTimer}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
+              Start
+            </button>
+          ) : (
+            <button
+              onClick={stopTimer}
+              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+            >
+              Stop
+            </button>
+          )}
+          <button
+            onClick={resetTimer}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
