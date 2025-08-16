@@ -1,0 +1,85 @@
+import React, { useState, useMemo, useCallback } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
+const ChangeMapView = React.memo(({ coords }) => {
+  const map = useMap();
+  map.setView(coords, 13);
+  return null;
+});
+
+function App() {
+  const [location, setLocation] = useState([12.9716, 77.5946]); 
+  const [search, setSearch] = useState("");
+  const [markers, setMarkers] = useState([]);
+
+  const randomColor = useMemo(
+    () => `hsl(${Math.floor(Math.random() * 360)}, 70%, 70%)`,
+    [markers.length]
+  );
+
+  const handleSearch = useCallback(() => {
+    if (!search) return;
+  
+    const lat = location[0] + (Math.random() - 0.5) * 0.1;
+    const lng = location[1] + (Math.random() - 0.5) * 0.1;
+    const newMarker = { id: Date.now(), name: search, coords: [lat, lng] };
+    setMarkers((prev) => [...prev, newMarker]);
+    setSearch("");
+  }, [search, location]);
+
+  return (
+    <div className="p-4">
+      <h1 className="text-xl font-bold mb-2">React Map Application 🗺️</h1>
+      <div className="mb-3">
+        <input
+          type="text"
+          placeholder="Search a place..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border p-2 mr-2"
+        />
+        <button
+          onClick={handleSearch}
+          className="bg-blue-500 text-white px-3 py-1 rounded"
+        >
+          Search
+        </button>
+      </div>
+
+      <MapContainer
+        center={location}
+        zoom={13}
+        style={{ height: "500px", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="&copy; OpenStreetMap contributors"
+        />
+        <ChangeMapView coords={location} />
+
+        {markers.map((m) => (
+          <Marker key={m.id} position={m.coords}>
+            <Popup>
+              <div style={{ background: randomColor, padding: "5px" }}>
+                📍 <b>{m.name}</b>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
+  );
+}
+
+export default React.memo(App);
