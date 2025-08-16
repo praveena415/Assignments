@@ -1,0 +1,101 @@
+
+import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+
+export default function App() {
+  const [studyHours, setStudyHours] = useState("");
+  const [breakMinutes, setBreakMinutes] = useState("");
+  const [sleepHours, setSleepHours] = useState("");
+  const [stress, setStress] = useState(3);
+  const [focus, setFocus] = useState(3);
+  const [reflection, setReflection] = useState("");
+  const [saved, setSaved] = useState(false);
+
+  const saveLog = () => {
+    const log = {
+      date: new Date().toISOString().slice(0, 10),
+      studyHours,
+      breakMinutes,
+      sleepHours,
+      stress,
+      focus,
+      reflection,
+    };
+    console.log("Saved Log:", log);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center p-6 bg-gray-100 font-sans">
+      <h1 className="text-2xl font-bold mb-4">Daily Study & Wellness Log</h1>
+
+      <div className="bg-white p-4 rounded-xl shadow w-full max-w-md space-y-3">
+        <input
+          type="number"
+          placeholder="Study hours"
+          value={studyHours}
+          onChange={(e) => setStudyHours(e.target.value)}
+          className="border p-2 w-full rounded"
+        />
+        <input
+          type="number"
+          placeholder="Break minutes"
+          value={breakMinutes}
+          onChange={(e) => setBreakMinutes(e.target.value)}
+          className="border p-2 w-full rounded"
+        />
+        <input
+          type="number"
+          placeholder="Sleep hours"
+          value={sleepHours}
+          onChange={(e) => setSleepHours(e.target.value)}
+          className="border p-2 w-full rounded"
+        />
+
+        <label className="block">Stress: {stress}</label>
+        <input
+          type="range"
+          min="1"
+          max="5"
+          value={stress}
+          onChange={(e) => setStress(e.target.value)}
+          className="w-full"
+        />
+
+        <label className="block">Focus: {focus}</label>
+        <input
+          type="range"
+          min="1"
+          max="5"
+          value={focus}
+          onChange={(e) => setFocus(e.target.value)}
+          className="w-full"
+        />
+
+        <textarea
+          placeholder="Reflection (Markdown supported)"
+          value={reflection}
+          onChange={(e) => setReflection(e.target.value)}
+          className="border p-2 w-full rounded h-24"
+        />
+
+        <button
+          onClick={saveLog}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Save Log
+        </button>
+
+        {saved && <p className="text-green-600">✅ Log saved!</p>}
+      </div>
+
+      {reflection && (
+        <div className="bg-white mt-6 p-4 rounded-xl shadow w-full max-w-md">
+          <h2 className="font-semibold mb-2">Reflection Preview</h2>
+          <ReactMarkdown>{reflection}</ReactMarkdown>
+        </div>
+      )}
+    </div>
+  );
+}
