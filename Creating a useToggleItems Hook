@@ -1,0 +1,42 @@
+
+import { useState } from "react";
+
+function useToggleItems(initialValue, initialPosition = 0) {
+  if (!Array.isArray(initialValue) || initialValue.length === 0) {
+    throw new Error("useToggleItems requires a non-empty array as the first argument");
+  }
+
+  const [index, setIndex] = useState(
+    initialPosition >= 0 && initialPosition < initialValue.length
+      ? initialPosition
+      : 0
+  );
+
+  const toggleState = () => {
+    setIndex((prev) => (prev + 1) % initialValue.length);
+  };
+
+  return [initialValue[index], toggleState];
+}
+
+
+export default function App() {
+
+  const [state, toggleState] = useToggleItems(["A", "B", "C"], 1);
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <div className="bg-white p-6 rounded-lg shadow text-center w-72">
+        <h1 className="text-xl font-bold mb-4">🔄 useToggleItems Demo</h1>
+        <p className="text-3xl font-mono mb-4">{state}</p>
+
+        <button
+          onClick={toggleState}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Toggle
+        </button>
+      </div>
+    </div>
+  );
+}
