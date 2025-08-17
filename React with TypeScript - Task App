@@ -1,0 +1,135 @@
+import React, { useState } from "react";
+
+enum Priority {
+  Low = "Low",
+  Medium = "Medium",
+  High = "High",
+}
+
+interface Task {
+  id: number;
+  description: string;
+  priority: Priority;
+  completed: boolean;
+}
+
+interface TaskItemProps {
+  task: Task;
+  toggleTask: (id: number) => void;
+}
+
+const TaskItem: React.FC<TaskItemProps> = ({ task, toggleTask }) => {
+  return (
+    <li
+      style={{
+        margin: "8px 0",
+        padding: "10px",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        background: task.completed ? "#e0ffe0" : "#fff",
+      }}
+    >
+      <input
+        type="checkbox"
+        checked={task.completed}
+        onChange={() => toggleTask(task.id)}
+        style={{ marginRight: "10px" }}
+      />
+      <strong>{task.description}</strong> - <em>{task.priority}</em>
+    </li>
+  );
+};
+
+enum Filter {
+  All = "All",
+  Completed = "Completed",
+  Incomplete = "Incomplete",
+}
+
+const App: React.FC = () => {
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTask, setNewTask] = useState<string>("");
+  const [priority, setPriority] = useState<Priority>(Priority.Low);
+  const [filter, setFilter] = useState<Filter>(Filter.All);
+
+  const addTask = (): void => {
+    if (newTask.trim() === "") return;
+    const task: Task = {
+      id: Date.now(),
+      description: newTask,
+      priority,
+      completed: false,
+    };
+    setTasks([...tasks, task]);
+    setNewTask("");
+    setPriority(Priority.Low);
+  };
+
+  const toggleTask = (id: number): void => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
+
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === Filter.Completed) return task.completed;
+    if (filter === Filter.Incomplete) return !task.completed;
+    return true;
+  });
+
+  return (
+    <div style={{ padding: "20px", maxWidth: "500px", margin: "0 auto" }}>
+      <h1>Task Manager (React + TypeScript)</h1>
+
+      <div style={{ marginBottom: "20px" }}>
+        <input
+          type="text"
+          placeholder="Enter task description"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          style={{ padding: "8px", width: "70%", marginRight: "10px" }}
+        />
+        <select
+          value={priority}
+          onChange={(e) => setPriority(e.target.value as Priority)}
+          style={{ padding: "8px" }}
+        >
+          <option value={Priority.Low}>Low</option>
+          <option value={Priority.Medium}>Medium</option>
+          <option value={Priority.High}>High</option>
+        </select>
+        <button onClick={addTask} style={{ marginLeft: "10px", padding: "8px" }}>
+          Add
+        </button>
+      </div>
+
+      <div style={{ marginBottom: "20px" }}>
+        <label>Filter: </label>
+        <select
+          value={filter}
+          onChange={(e) => setFilter(e.target.value as Filter)}
+          style={{ padding: "8px" }}
+        >
+          <option value={Filter.All}>All</option>
+          <option value={Filter.Completed}>Completed</option>
+          <option value={Filter.Incomplete}>Incomplete</option>
+        </select>
+      </div>
+
+      <ul style={{ padding: 0, listStyle: "none" }}>
+        {filteredTasks.length > 0 ? (
+          filteredTasks.map((task) => (
+            <TaskItem key={task.id} task={task} toggleTask={toggleTask} />
+          ))
+        ) : (
+          <p>No tasks available</p>
+        )}
+      </ul>
+    </div>
+  );
+};
+
+export default App;
