@@ -1,0 +1,100 @@
+import React, { useState } from "react";
+
+function useForm(initialValues) {
+  const [values, setValues] = useState(initialValues);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
+
+  const resetForm = () => setValues(initialValues);
+
+  return { values, handleChange, resetForm };
+}
+
+
+function LoginForm() {
+  const { values, handleChange, resetForm } = useForm({ email: "", password: "" });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Login -> Email: ${values.email}, Password: ${values.password}`);
+    resetForm();
+  };
+
+  return (
+    <div style={{ marginBottom: "20px" }}>
+      <h2>Login Form</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Email: </label>
+          <input 
+            type="email" 
+            name="email" 
+            value={values.email} 
+            onChange={handleChange} 
+          />
+        </div>
+        <div>
+          <label>Password: </label>
+          <input 
+            type="password" 
+            name="password" 
+            value={values.password} 
+            onChange={handleChange} 
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
+}
+
+function SignupForm() {
+  const { values, handleChange, resetForm } = useForm({ username: "", email: "" });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Signup -> Username: ${values.username}, Email: ${values.email}`);
+    resetForm();
+  };
+
+  return (
+    <div>
+      <h2>Signup Form</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Username: </label>
+          <input 
+            type="text" 
+            name="username" 
+            value={values.username} 
+            onChange={handleChange} 
+          />
+        </div>
+        <div>
+          <label>Email: </label>
+          <input 
+            type="email" 
+            name="email" 
+            value={values.email} 
+            onChange={handleChange} 
+          />
+        </div>
+        <button type="submit">Signup</button>
+      </form>
+    </div>
+  );
+}
+
+
+export default function App() {
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>React Custom Hook Example</h1>
+      <LoginForm />
+      <SignupForm />
+    </div>
+  );
+}
