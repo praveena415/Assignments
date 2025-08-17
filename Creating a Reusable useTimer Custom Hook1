@@ -1,0 +1,57 @@
+import React, { useState, useEffect, useRef } from "react";
+
+function useTimer() {
+  const [timer, setTimer] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const intervalRef = useRef(null);
+
+  const startTimer = () => {
+    if (!isRunning) {
+      setIsRunning(true);
+      intervalRef.current = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+    }
+  };
+
+  const stopTimer = () => {
+    setIsRunning(false);
+    clearInterval(intervalRef.current);
+  };
+
+  const resetTimer = () => {
+    setIsRunning(false);
+    clearInterval(intervalRef.current);
+    setTimer(0);
+  };
+
+  useEffect(() => {
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  return { timer, isRunning, startTimer, stopTimer, resetTimer };
+}
+
+export default function App() {
+  const { timer, isRunning, startTimer, stopTimer, resetTimer } = useTimer();
+
+  return (
+    <div style={{ padding: "20px", textAlign: "center" }}>
+      <h1>⏱️ Custom Hook: useTimer</h1>
+      <h2>{timer} seconds</h2>
+      <p>Status: {isRunning ? "Running" : "Stopped"}</p>
+
+      <div style={{ marginTop: "20px" }}>
+        <button onClick={startTimer} disabled={isRunning} style={{ margin: "5px" }}>
+          Start
+        </button>
+        <button onClick={stopTimer} disabled={!isRunning} style={{ margin: "5px" }}>
+          Stop
+        </button>
+        <button onClick={resetTimer} style={{ margin: "5px" }}>
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+}
