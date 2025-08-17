@@ -1,0 +1,63 @@
+import React, { useState, useEffect, useRef } from "react";
+
+type TimerState = number; 
+type IsRunningState = boolean;
+
+const App: React.FC = () => {
+ 
+  const [timer, setTimer] = useState<TimerState>(0);
+  const [isRunning, setIsRunning] = useState<IsRunningState>(false);
+
+  const intervalRef = useRef<number | null>(null);
+
+  const startTimer = (): void => {
+    if (!isRunning) {
+      setIsRunning(true);
+      intervalRef.current = window.setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+    }
+  };
+  const stopTimer = (): void => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setIsRunning(false);
+  };
+
+  const resetTimer = (): void => {
+    stopTimer();
+    setTimer(0);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>⏱️ React + TypeScript Timer</h1>
+      <h2>{timer} seconds</h2>
+      <p>Status: {isRunning ? "Running" : "Stopped"}</p>
+
+      <div style={{ marginTop: "20px" }}>
+        <button onClick={startTimer} disabled={isRunning} style={{ margin: "5px" }}>
+          Start
+        </button>
+        <button onClick={stopTimer} disabled={!isRunning} style={{ margin: "5px" }}>
+          Stop
+        </button>
+        <button onClick={resetTimer} style={{ margin: "5px" }}>
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default App;
