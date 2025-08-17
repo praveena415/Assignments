@@ -1,0 +1,255 @@
+
+import React, { useState } from "react";
+
+enum Rating {
+  Excellent = "Excellent",
+  Good = "Good",
+  Average = "Average",
+  Poor = "Poor",
+}
+
+interface Feedback {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  diningDate: string;
+  foodRating: Rating;
+  serviceRating: Rating;
+  ambienceRating: Rating;
+  message: string;
+}
+
+const App: React.FC = () => {
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const [submitted, setSubmitted] = useState(false);
+
+  const [formData, setFormData] = useState<Omit<Feedback, "id">>({
+    name: "",
+    email: "",
+    phone: "",
+    diningDate: "",
+    foodRating: Rating.Good,
+    serviceRating: Rating.Good,
+    ambienceRating: Rating.Good,
+    message: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+ 
+    if (!formData.name || !formData.email || !formData.message) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const newFeedback: Feedback = {
+      id: Date.now(),
+      ...formData,
+    };
+
+    setFeedbacks((prev) => [...prev, newFeedback]);
+    setSubmitted(true);
+
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      diningDate: "",
+      foodRating: Rating.Good,
+      serviceRating: Rating.Good,
+      ambienceRating: Rating.Good,
+      message: "",
+    });
+  };
+
+  return (
+    <div style={{ padding: "20px", fontFamily: "Arial" }}>
+      <h1>Aromatic Bar - Feedback & Grievance System</h1>
+
+      {!submitted ? (
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            border: "1px solid #ccc",
+            padding: "15px",
+            borderRadius: "8px",
+            marginBottom: "20px",
+          }}
+        >
+          <h2>Customer Feedback Form</h2>
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name *"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            style={{ display: "block", margin: "10px 0", padding: "8px" }}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email *"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            style={{ display: "block", margin: "10px 0", padding: "8px" }}
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={formData.phone}
+            onChange={handleChange}
+            style={{ display: "block", margin: "10px 0", padding: "8px" }}
+          />
+          <input
+            type="date"
+            name="diningDate"
+            value={formData.diningDate}
+            onChange={handleChange}
+            style={{ display: "block", margin: "10px 0", padding: "8px" }}
+          />
+
+          <label>Food Rating:</label>
+          <select
+            name="foodRating"
+            value={formData.foodRating}
+            onChange={handleChange}
+            style={{ margin: "10px", padding: "6px" }}
+          >
+            {Object.values(Rating).map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+
+          <label>Service Rating:</label>
+          <select
+            name="serviceRating"
+            value={formData.serviceRating}
+            onChange={handleChange}
+            style={{ margin: "10px", padding: "6px" }}
+          >
+            {Object.values(Rating).map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+
+          <label>Ambience Rating:</label>
+          <select
+            name="ambienceRating"
+            value={formData.ambienceRating}
+            onChange={handleChange}
+            style={{ margin: "10px", padding: "6px" }}
+          >
+            {Object.values(Rating).map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+
+          <textarea
+            name="message"
+            placeholder="Your feedback *"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            rows={4}
+            style={{ display: "block", margin: "10px 0", padding: "8px", width: "100%" }}
+          ></textarea>
+
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "teal",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+          >
+            Submit
+          </button>
+        </form>
+      ) : (
+        <div
+          style={{
+            padding: "15px",
+            border: "1px solid green",
+            borderRadius: "8px",
+            marginBottom: "20px",
+          }}
+        >
+          <h2>Thank you for your feedback!</h2>
+          <button
+            onClick={() => setSubmitted(false)}
+            style={{
+              marginTop: "10px",
+              backgroundColor: "gray",
+              color: "white",
+              padding: "8px 15px",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+          >
+            Submit another response
+          </button>
+        </div>
+      )}
+
+      <h2>All Feedback Submissions</h2>
+      {feedbacks.length === 0 ? (
+        <p>No feedback yet.</p>
+      ) : (
+        <table
+          border={1}
+          cellPadding={8}
+          style={{ borderCollapse: "collapse", width: "100%" }}
+        >
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Date</th>
+              <th>Food</th>
+              <th>Service</th>
+              <th>Ambience</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            {feedbacks.map((fb) => (
+              <tr key={fb.id}>
+                <td>{fb.name}</td>
+                <td>{fb.email}</td>
+                <td>{fb.diningDate || "-"}</td>
+                <td>{fb.foodRating}</td>
+                <td>{fb.serviceRating}</td>
+                <td>{fb.ambienceRating}</td>
+                <td>{fb.message}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+};
+
+export default App;
