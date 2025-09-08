@@ -1,0 +1,38 @@
+
+import { useEffect, useState } from "react";
+
+const QuoteViewer = () => {
+  const [quote, setQuote] = useState({ content: "", author: "" });
+
+  const fetchQuote = async () => {
+    try {
+      const res = await fetch("https://api.quotable.io/random");
+      const data = await res.json();
+      setQuote({ content: data.content, author: data.author });
+    } catch (error) {
+      setQuote({ content: "Failed to load quote.", author: "" });
+    }
+  };
+
+  useEffect(() => {
+    fetchQuote(); // initial fetch
+    const intervalId = setInterval(fetchQuote, 30000);
+
+    return () => clearInterval(intervalId); // cleanup
+  }, []);
+
+  return (
+    <div style={{ textAlign: "center", padding: "30px", fontFamily: "sans-serif" }}>
+      <h1>Daily Quote Viewer</h1>
+      <blockquote style={{ fontSize: "1.5rem", fontStyle: "italic", margin: "20px auto", maxWidth: "600px" }}>
+        “{quote.content}”
+      </blockquote>
+      <p style={{ fontWeight: "bold" }}>— {quote.author}</p>
+      <button onClick={fetchQuote} style={{ padding: "10px 20px", marginTop: "20px" }}>
+        Get New Quote
+      </button>
+    </div>
+  );
+};
+
+export default QuoteViewer;
