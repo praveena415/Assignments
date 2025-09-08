@@ -1,0 +1,27 @@
+import { useState } from "react";
+
+const ToggleButton = () => {
+  const [isOn, setIsOn] = useState(false);
+
+  const handleToggle = () => setIsOn((prev) => !prev);
+
+  const styles = {
+    padding: "10px 20px",
+    fontSize: "20px",
+    fontWeight: "bold",
+    color: isOn ? "green" : "red",
+    border: "2px solid",
+    borderColor: isOn ? "green" : "red",
+    backgroundColor: "#f9f9f9",
+    cursor: "pointer",
+    borderRadius: "5px"
+  };
+
+  return (
+    <button onClick={handleToggle} style={styles}>
+      {isOn ? "ON" : "OFF"}
+    </button>
+  );
+};
+
+export default ToggleButton;
