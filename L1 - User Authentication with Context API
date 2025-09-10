@@ -1,0 +1,52 @@
+import React, { createContext, useContext, useState } from "react";
+
+const AuthContext = createContext();
+
+const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const toggleAuth = () => setIsAuthenticated(prev => !prev);
+  return <AuthContext.Provider value={{ isAuthenticated, toggleAuth }}>{children}</AuthContext.Provider>;
+};
+
+const Navbar = () => {
+  const { isAuthenticated, toggleAuth } = useContext(AuthContext);
+  return (
+    <nav style={{ padding: 16, display: "flex", justifyContent: "flex-end", gap: 8 }}>
+      <button onClick={toggleAuth} style={{ padding: "8px 12px", cursor: "pointer" }}>
+        {isAuthenticated ? "Logout" : "Login"}
+      </button>
+    </nav>
+  );
+};
+
+const Main = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+  return (
+    <main style={{ padding: 24, textAlign: "center" }}>
+      <h2>{isAuthenticated ? "You are logged in. Welcome back!" : "You are logged out. Please log in to continue."}</h2>
+    </main>
+  );
+};
+
+const Footer = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+  return (
+    <footer style={{ padding: 12, textAlign: "center", borderTop: "1px solid #eee" }}>
+      <p>{isAuthenticated ? "Welcome, User" : "Please log in"}</p>
+    </footer>
+  );
+};
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <div style={{ fontFamily: "sans-serif", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+        <Navbar />
+        <div style={{ flex: 1 }}>
+          <Main />
+        </div>
+        <Footer />
+      </div>
+    </AuthProvider>
+  );
+}
