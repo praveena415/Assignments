@@ -1,0 +1,89 @@
+import React, { createContext, useContext, useState } from "react";
+import { ChakraProvider, Box, Flex, Grid, Button, Text, Heading } from "@chakra-ui/react";
+
+const AuthContext = createContext();
+const ThemeContext = createContext();
+
+const AuthContextProvider = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const toggleAuth = () => setIsLoggedIn(prev => !prev);
+  return <AuthContext.Provider value={{ isLoggedIn, toggleAuth }}>{children}</AuthContext.Provider>;
+};
+
+const ThemeContextProvider = ({ children }) => {
+  const [theme, setTheme] = useState("light");
+  const toggleTheme = () => setTheme(prev => (prev === "light" ? "dark" : "light"));
+  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
+};
+
+const Navbar = () => {
+  const { isLoggedIn, toggleAuth } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  return (
+    <Flex
+      as="nav"
+      p="4"
+      bg={theme === "light" ? "gray.100" : "gray.700"}
+      color={theme === "light" ? "black" : "white"}
+      align="center"
+      justify="space-between"
+    >
+      <Heading size="sm">My App</Heading>
+      <Flex gap="3">
+        <Button onClick={toggleTheme}>
+          {theme === "light" ? "Switch to Dark" : "Switch to Light"}
+        </Button>
+        <Button onClick={toggleAuth}>
+          {isLoggedIn ? "Log Out" : "Log In"}
+        </Button>
+      </Flex>
+    </Flex>
+  );
+};
+
+const Main = () => {
+  const { isLoggedIn } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
+  const cards = ["Card 1", "Card 2", "Card 3", "Card 4", "Card 5", "Card 6"];
+  return (
+    <Box p="6" bg={theme === "light" ? "white" : "gray.900"} color={theme === "light" ? "black" : "white"} flex="1">
+      <Heading mb="4" textAlign="center" size="md">
+        {isLoggedIn ? "You are logged in. Enjoy your dashboard." : "You are logged out. Please log in to access features."}
+      </Heading>
+      <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }} gap="4" mt="4">
+        {cards.map((c) => (
+          <Box key={c} p="4" borderRadius="md" shadow="md" bg={theme === "light" ? "gray.200" : "gray.700"}>
+            <Text fontWeight="semibold">{c}</Text>
+            <Text mt="2" fontSize="sm">This card adapts to the active theme and is responsive.</Text>
+          </Box>
+        ))}
+      </Grid>
+    </Box>
+  );
+};
+
+const Footer = () => {
+  const { isLoggedIn } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
+  return (
+    <Box as="footer" p="4" bg={theme === "light" ? "gray.300" : "gray.800"} color={theme === "light" ? "black" : "white"} textAlign="center">
+      <Text>{isLoggedIn ? "Welcome, User" : "Please log in"}</Text>
+    </Box>
+  );
+};
+
+export default function App() {
+  return (
+    <AuthContextProvider>
+      <ThemeContextProvider>
+        <ChakraProvider>
+          <Flex direction="column" minH="100vh">
+            <Navbar />
+            <Main />
+            <Footer />
+          </Flex>
+        </ChakraProvider>
+      </ThemeContextProvider>
+    </AuthContextProvider>
+  );
+}
