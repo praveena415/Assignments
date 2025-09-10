@@ -1,0 +1,100 @@
+import React, { createContext, useContext, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
+
+const UserContext = createContext();
+
+const UserProvider = ({ children }) => {
+  const [user, setUser] = useState({
+    name: "John Doe",
+    email: "john@example.com",
+  });
+
+  const updateUser = (newData) => {
+    setUser((prev) => ({ ...prev, ...newData }));
+  };
+
+  return (
+    <UserContext.Provider value={{ user, updateUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+const Navbar = () => (
+  <nav style={{ padding: "1rem", background: "#f0f0f0" }}>
+    <Link to="/" style={{ marginRight: "1rem" }}>Home</Link>
+    <Link to="/profile" style={{ marginRight: "1rem" }}>Profile</Link>
+    <Link to="/settings">Settings</Link>
+  </nav>
+);
+
+const Home = () => {
+  const { user } = useContext(UserContext);
+  return (
+    <div style={{ padding: "1rem" }}>
+      <h2>Welcome, {user.name}!</h2>
+      <p>This is the home page.</p>
+    </div>
+  );
+};
+const Profile = () => {
+  const { user } = useContext(UserContext);
+  return (
+    <div style={{ padding: "1rem" }}>
+      <h2>User Profile</h2>
+      <p><strong>Name:</strong> {user.name}</p>
+      <p><strong>Email:</strong> {user.email}</p>
+    </div>
+  );
+};
+
+const Settings = () => {
+  const { user, updateUser } = useContext(UserContext);
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateUser({ name, email });
+    navigate("/profile");
+  };
+
+  return (
+    <div style={{ padding: "1rem" }}>
+      <h2>Edit Profile</h2>
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: "1rem" }}>
+          <label>Name: </label><br />
+          <input value={name} onChange={(e) => setName(e.target.value)} required />
+        </div>
+        <div style={{ marginBottom: "1rem" }}>
+          <label>Email: </label><br />
+          <input value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <button type="submit">Update</button>
+      </form>
+    </div>
+  );
+};
+
+const App = () => (
+  <UserProvider>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
+      </Routes>
+    </Router>
+  </UserProvider>
+);
+
+export default App;
