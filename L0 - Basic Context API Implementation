@@ -1,0 +1,78 @@
+import React, { createContext, useContext, useState } from "react";
+
+const ThemeContext = createContext();
+
+const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+const ThemedBox = () => {
+  const { theme } = useContext(ThemeContext);
+
+  const styles = {
+    padding: "20px",
+    margin: "10px",
+    borderRadius: "10px",
+    textAlign: "center",
+    backgroundColor: theme === "light" ? "#f0f0f0" : "#333",
+    color: theme === "light" ? "#000" : "#fff",
+  };
+
+  return <div style={styles}>This box is in {theme} mode</div>;
+};
+
+export default function App() {
+  const { theme, toggleTheme } = useContext(ThemeContext) || {};
+
+  return (
+    <ThemeProvider>
+      <MainApp />
+    </ThemeProvider>
+  );
+}
+
+const MainApp = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  const appStyles = {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: theme === "light" ? "#fff" : "#111",
+    transition: "all 0.3s ease",
+  };
+
+  return (
+    <div style={appStyles}>
+      <h1>React Context API Theme Toggle</h1>
+      <button
+        onClick={toggleTheme}
+        style={{
+          padding: "10px 20px",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          backgroundColor: theme === "light" ? "#333" : "#ddd",
+          color: theme === "light" ? "#fff" : "#000",
+        }}
+      >
+        Toggle Theme
+      </button>
+
+      <ThemedBox />
+      <ThemedBox />
+    </div>
+  );
+};
