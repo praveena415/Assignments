@@ -1,0 +1,99 @@
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
+const Navbar = () => (
+  <nav style={{ padding: '1rem', background: '#eee' }}>
+    <Link to="/">Home</Link>
+  </nav>
+);
+
+const Home = () => {
+  const [city, setCity] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (city.trim() !== '') {
+      navigate(`/weather/${city}`);
+    }
+  };
+
+  return (
+    <div style={{ padding: '1rem' }}>
+      <h2>Search Weather by City</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Enter city name"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          style={{ padding: '0.5rem', marginRight: '1rem' }}
+        />
+        <button type="submit">Get Weather</button>
+      </form>
+    </div>
+  );
+};
+
+const Weather = () => {
+  const { city } = useParams();
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${}&units=metric`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setWeather(data);
+        setLoading(false);
+      });
+  }, [city]);
+
+  if (loading) return <p style={{ padding: '1rem' }}>Loading...</p>;
+
+  if (weather.cod !== 200) return <p style={{ padding: '1rem' }}>City not found.</p>;
+
+  const { temp, humidity } = weather.main;
+  const condition = weather.weather[0].description;
+
+  return (
+    <div style={{ padding: '1rem' }}>
+      <h2>Weather in {city}</h2>
+      <p><strong>Temperature:</strong> {temp}°C</p>
+      <p><strong>Humidity:</strong> {humidity}%</p>
+      <p><strong>Condition:</strong> {condition}</p>
+
+      <div style={{ marginTop: '1rem' }}>
+        <iframe
+          title="map"
+          width="100%"
+          height="300"
+          style={{ border: 0 }}
+          loading="lazy"
+          allowFullScreen
+          src={`https://www.google.com/maps/embed/v1/place?key=${}&q=${encodeURIComponent(city)}`}
+        ></iframe>
+      </div>
+    </div>
+  );
+};
+
+const App = () => (
+  <Router>
+    <Navbar />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/weather/:city" element={<Weather />} />
+    </Routes>
+  </Router>
+);
+
+export default App;
